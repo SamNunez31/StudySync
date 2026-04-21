@@ -1,0 +1,3071 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudySync — Marketplace de Tutorías Universitarias</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&display=swap" rel="stylesheet" />
+  <style>
+/* =============================================
+   STUDYSYNC — Tema claro, WCAG 2.2, mobile-first
+   ============================================= */
+
+/* ---------- VARIABLES & RESET ---------- */
+:root {
+  /* Tema claro */
+  --bg: #f7f7fb;
+  --bg2: #ffffff;
+  --bg3: #f1f2f8;
+  --surface: #ffffff;
+  --surface2: #fafbff;
+  --border: rgba(18, 21, 40, 0.09);
+  --border-strong: rgba(18, 21, 40, 0.16);
+  --border-focus: rgba(108, 127, 255, 0.55);
+
+  --accent-a: #5465ff;
+  --accent-b: #8b5cf6;
+  --accent-c: #10b981;
+  --accent-glow: rgba(84, 101, 255, 0.1);
+
+  --text-primary: #121528;
+  --text-secondary: #4e5676;
+  --text-muted: #8c92ae;
+
+  --success: #059669;
+  --success-bg: #ecfdf5;
+  --success-border: #a7f3d0;
+  --warning: #d97706;
+  --warning-bg: #fffbeb;
+  --warning-border: #fde68a;
+  --danger: #dc2626;
+  --danger-bg: #fef2f2;
+  --danger-border: #fecaca;
+  --pending: #7c3aed;
+  --pending-bg: #f5f3ff;
+  --pending-border: #ddd6fe;
+
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-xs: 6px;
+  --shadow-sm: 0 1px 2px rgba(18, 21, 40, 0.04);
+  --shadow: 0 4px 12px rgba(18, 21, 40, 0.06), 0 1px 3px rgba(18, 21, 40, 0.04);
+  --shadow-lg: 0 20px 40px -12px rgba(18, 21, 40, 0.12), 0 8px 16px -8px rgba(18, 21, 40, 0.08);
+  --shadow-accent: 0 8px 24px rgba(84, 101, 255, 0.22);
+
+  --font-display: 'Plus Jakarta Sans', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+
+  --nav-h: 68px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--accent-a); text-decoration: none; transition: opacity 0.2s; }
+a:hover { opacity: 0.8; }
+a:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 3px; border-radius: 4px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- UTILIDAD ---------- */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+.hidden { display: none !important; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+/* ---------- BOTONES ---------- */
+.btn-primary {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 6px;
+  background: linear-gradient(135deg, var(--accent-a), var(--accent-b));
+  color: #fff; font-family: var(--font-body); font-weight: 600;
+  font-size: 0.95rem; padding: 12px 24px; border: none;
+  border-radius: var(--radius-sm); cursor: pointer;
+  transition: transform 0.18s, box-shadow 0.18s, opacity 0.18s;
+  box-shadow: var(--shadow-accent);
+  min-height: 44px;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(84, 101, 255, 0.34); }
+.btn-primary:active { transform: translateY(0); }
+.btn-primary:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 3px; }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: var(--shadow-sm); }
+
+.btn-ghost {
+  background: transparent; color: var(--text-secondary);
+  font-family: var(--font-body); font-weight: 500;
+  padding: 10px 18px; border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm); cursor: pointer;
+  transition: all 0.18s; font-size: 0.9rem; min-height: 44px;
+}
+.btn-ghost:hover { color: var(--text-primary); border-color: var(--accent-a); background: var(--surface2); }
+.btn-ghost:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 2px; }
+
+.btn-outline-sm {
+  background: transparent; color: var(--danger); font-family: var(--font-body);
+  font-weight: 500; padding: 8px 16px; border: 1px solid var(--danger-border);
+  border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem;
+  transition: all 0.18s; min-height: 44px;
+}
+.btn-outline-sm:hover { background: var(--danger-bg); border-color: var(--danger); }
+.btn-outline-sm:focus-visible { outline: 2px solid var(--danger); outline-offset: 2px; }
+
+.btn-full { width: 100%; }
+
+.btn-link {
+  background: none; border: none; color: var(--accent-a);
+  cursor: pointer; font-family: var(--font-body); font-size: inherit;
+  font-weight: 600; padding: 0; transition: opacity 0.18s;
+}
+.btn-link:hover { opacity: 0.75; }
+.btn-link:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 3px; border-radius: 3px; }
+
+.btn-secondary {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--bg3); color: var(--text-primary);
+  font-family: var(--font-body); font-weight: 600; font-size: 0.9rem;
+  padding: 10px 20px; border: 1px solid var(--border);
+  border-radius: var(--radius-sm); cursor: pointer;
+  transition: all 0.18s; min-height: 44px;
+}
+.btn-secondary:hover { border-color: var(--accent-a); background: var(--surface); }
+.btn-secondary:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 2px; }
+
+.btn-success {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 6px;
+  background: var(--success); color: #fff;
+  font-family: var(--font-body); font-weight: 600; font-size: 0.9rem;
+  padding: 10px 16px; border: none;
+  border-radius: var(--radius-sm); cursor: pointer;
+  transition: all 0.18s; min-height: 44px;
+}
+.btn-success:hover { background: #047857; }
+.btn-success:focus-visible { outline: 2px solid var(--success); outline-offset: 2px; }
+
+/* ---------- NAVBAR ---------- */
+.navbar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(247, 247, 251, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  height: var(--nav-h);
+}
+.nav-inner {
+  max-width: 1200px; margin: 0 auto; padding: 0 24px;
+  height: 100%; display: flex; align-items: center; gap: 24px;
+}
+.logo {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-display); font-size: 1.25rem;
+  color: var(--text-primary); font-weight: 700;
+  text-decoration: none; letter-spacing: -0.3px;
+  flex-shrink: 0;
+}
+.logo-icon { font-size: 1.4rem; color: var(--accent-a); }
+.logo strong { color: var(--accent-a); }
+.logo:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 4px; border-radius: 4px; }
+
+.nav-links { display: flex; gap: 4px; margin-left: 16px; }
+.nav-link {
+  color: var(--text-secondary); font-size: 0.9rem; font-weight: 500;
+  padding: 8px 14px; border-radius: var(--radius-xs);
+  transition: all 0.18s; text-decoration: none; min-height: 44px;
+  display: inline-flex; align-items: center;
+}
+.nav-link:hover { color: var(--text-primary); background: var(--bg3); }
+.nav-link:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 2px; }
+
+.nav-auth, .nav-user {
+  margin-left: auto; display: flex; align-items: center; gap: 10px;
+}
+.user-greeting {
+  font-size: 0.88rem; color: var(--text-secondary);
+  max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .nav-inner { gap: 12px; padding: 0 16px; }
+  .nav-links { display: none; }
+  .user-greeting { display: none; }
+  .btn-ghost, .btn-primary, .btn-outline-sm { padding: 8px 12px; font-size: 0.85rem; }
+}
+
+/* ---------- HERO ---------- */
+.hero {
+  position: relative; min-height: calc(100vh - var(--nav-h));
+  display: flex; align-items: center;
+  padding: 80px 24px; overflow: hidden;
+  max-width: 1200px; margin: 0 auto;
+  gap: 40px;
+}
+
+.hero-bg-shapes {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: -1; overflow: hidden;
+}
+.shape {
+  position: absolute; border-radius: 50%;
+  filter: blur(100px); opacity: 0.35;
+}
+.shape-1 {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, #c7d2fe, transparent 70%);
+  top: -200px; left: -150px;
+  animation: floatShape 12s ease-in-out infinite;
+}
+.shape-2 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, #ddd6fe, transparent 70%);
+  bottom: 100px; right: -100px;
+  animation: floatShape 15s ease-in-out infinite reverse;
+}
+.shape-3 {
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, #a7f3d0, transparent 70%);
+  top: 50%; left: 50%;
+  animation: floatShape 10s ease-in-out infinite 3s;
+}
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(84,101,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(84,101,255,0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+}
+@keyframes floatShape {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  33% { transform: translate(30px,-20px) scale(1.05); }
+  66% { transform: translate(-20px,30px) scale(0.95); }
+}
+
+.hero-content { flex: 1; max-width: 580px; position: relative; z-index: 1; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--surface); border: 1px solid var(--border);
+  padding: 6px 16px; border-radius: 100px; font-size: 0.82rem;
+  color: var(--text-secondary); margin-bottom: 28px;
+  animation: slideUp 0.6s ease both; box-shadow: var(--shadow-sm);
+}
+.hero-title {
+  font-family: var(--font-display); font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 800; line-height: 1.08; color: var(--text-primary);
+  letter-spacing: -0.8px; margin-bottom: 40px;
+  animation: slideUp 0.7s ease 0.1s both;
+}
+.hero-accent {
+  background: linear-gradient(135deg, var(--accent-a), var(--accent-b), var(--accent-c));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-subtitle {
+  font-size: 1.05rem; color: var(--text-secondary); line-height: 1.65;
+  margin-bottom: 36px; animation: slideUp 0.7s ease 0.2s both;
+}
+.hero-search-bar {
+  display: flex; gap: 0; margin-bottom: 20px;
+  animation: slideUp 0.7s ease 0.3s both;
+  box-shadow: var(--shadow);
+  border-radius: var(--radius-sm);
+}
+.hero-input {
+  flex: 1; padding: 14px 20px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-right: none; border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+  color: var(--text-primary); font-family: var(--font-body); font-size: 0.95rem;
+  outline: none; transition: border-color 0.18s;
+  min-width: 0;
+}
+.hero-input::placeholder { color: var(--text-muted); }
+.hero-input:focus { border-color: var(--border-focus); box-shadow: 0 0 0 3px var(--accent-glow); z-index: 1; position: relative; }
+.hero-btn { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; white-space: nowrap; }
+
+.hero-tags {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  animation: slideUp 0.7s ease 0.4s both;
+}
+.hero-tag-label { font-size: 0.82rem; color: var(--text-muted); }
+.tag-pill {
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text-secondary); padding: 6px 14px; border-radius: 100px;
+  font-size: 0.82rem; cursor: pointer; transition: all 0.18s;
+  font-family: var(--font-body); min-height: 36px;
+}
+.tag-pill:hover { background: var(--bg3); color: var(--text-primary); border-color: var(--accent-a); }
+.tag-pill:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 2px; }
+
+.hero-visual {
+  position: relative; width: 320px; height: 320px;
+  flex-shrink: 0; display: none;
+}
+@media (min-width: 960px) { .hero-visual { display: block; } }
+
+.hero-card-float {
+  position: absolute;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  display: flex; align-items: center; gap: 12px;
+  box-shadow: var(--shadow-lg);
+  font-size: 0.88rem; color: var(--text-secondary);
+  white-space: nowrap;
+}
+.card-float-1 { top: 0; right: 0; animation: floatCard 4s ease-in-out infinite; }
+.card-float-2 { bottom: 80px; left: -20px; animation: floatCard 5s ease-in-out infinite 1s; }
+.card-float-3 { bottom: 0; right: 20px; animation: floatCard 4.5s ease-in-out infinite 0.5s; }
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.hcf-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.8rem; color: #fff; flex-shrink: 0;
+}
+.hcf-name { font-weight: 600; color: var(--text-primary); font-size: 0.9rem; }
+.hcf-sub { font-size: 0.78rem; color: var(--text-muted); }
+.hcf-icon { font-size: 1.1rem; }
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 620px) {
+  .hero { padding: 40px 20px; min-height: auto; }
+  .hero-search-bar { flex-direction: column; gap: 10px; box-shadow: none; }
+  .hero-input { border-radius: var(--radius-sm); border-right: 1px solid var(--border); }
+  .hero-btn { border-radius: var(--radius-sm); }
+}
+
+/* ---------- SECCIÓN TUTORES ---------- */
+.tutores-section { padding: 80px 24px; }
+.section-header { text-align: center; margin-bottom: 48px; }
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: -0.8px;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+.section-sub { color: var(--text-secondary); font-size: 1rem; }
+
+.tutores-layout {
+  display: grid;
+  grid-template-columns: 270px 1fr;
+  gap: 32px; align-items: start;
+}
+@media (max-width: 900px) {
+  .tutores-layout { grid-template-columns: 1fr; }
+  .filters-panel { position: static !important; }
+}
+
+/* ---------- FILTROS ---------- */
+.filters-panel {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 24px;
+  position: sticky; top: calc(var(--nav-h) + 16px);
+  box-shadow: var(--shadow-sm);
+}
+.filters-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 24px;
+}
+.filters-header h3 {
+  font-family: var(--font-display); font-size: 1rem; font-weight: 700;
+  color: var(--text-primary);
+}
+.filter-group { margin-bottom: 22px; }
+.filter-group:last-child { margin-bottom: 0; }
+.filter-label {
+  display: block; font-size: 0.78rem; font-weight: 700;
+  color: var(--text-secondary); margin-bottom: 10px; letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.filter-label strong { color: var(--accent-a); font-weight: 700; }
+.filter-select {
+  width: 100%; padding: 10px 14px;
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); color: var(--text-primary);
+  font-family: var(--font-body); font-size: 0.9rem;
+  cursor: pointer; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%234e5676' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center;
+  transition: border-color 0.18s;
+  min-height: 44px;
+}
+.filter-select:focus { outline: 2px solid var(--accent-a); border-color: var(--border-focus); }
+
+.filter-input {
+  width: 100%; padding: 10px 14px 10px 36px;
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); color: var(--text-primary);
+  font-family: var(--font-body); font-size: 0.9rem;
+  transition: border-color 0.18s, background 0.18s;
+  min-height: 44px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238c92ae' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m21 21-4.3-4.3'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: left 12px center;
+}
+.filter-input::placeholder { color: var(--text-muted); font-size: 0.85rem; }
+.filter-input:focus {
+  outline: 2px solid var(--accent-a); outline-offset: 0;
+  border-color: var(--border-focus); background: var(--surface);
+}
+
+.filter-range {
+  width: 100%; appearance: none;
+  height: 4px; background: var(--bg3);
+  border-radius: 4px; outline: none; cursor: pointer;
+  accent-color: var(--accent-a);
+}
+.filter-range:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 4px; border-radius: 4px; }
+.range-labels {
+  display: flex; justify-content: space-between;
+  font-size: 0.78rem; color: var(--text-muted); margin-top: 8px;
+}
+
+.filter-fieldset { border: none; }
+.rating-options { display: flex; flex-direction: column; gap: 8px; }
+.rating-opt {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.88rem; color: var(--text-secondary); cursor: pointer;
+  padding: 4px 0; min-height: 32px;
+}
+.rating-opt input { accent-color: var(--accent-a); width: 16px; height: 16px; cursor: pointer; }
+.rating-opt:hover { color: var(--text-primary); }
+
+/* ---------- GRID DE TUTORES ---------- */
+.tutores-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+.tutor-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 22px;
+  cursor: pointer; transition: all 0.22s;
+  display: flex; flex-direction: column; gap: 16px;
+  position: relative; overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.tutor-card::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-a), var(--accent-b));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.3s;
+}
+.tutor-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--border-strong); }
+.tutor-card:hover::after { transform: scaleX(1); }
+.tutor-card:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 3px; }
+
+.tutor-card-header { display: flex; align-items: flex-start; gap: 14px; }
+.tutor-avatar {
+  width: 52px; height: 52px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 800; font-size: 1.1rem;
+  color: #fff; flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+}
+.tutor-info { flex: 1; min-width: 0; }
+.tutor-name {
+  font-family: var(--font-display); font-weight: 700; font-size: 1rem;
+  color: var(--text-primary); margin-bottom: 2px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.tutor-carrera { font-size: 0.82rem; color: var(--text-muted); }
+.tutor-rating {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 0.88rem; font-weight: 600;
+  color: var(--warning); white-space: nowrap;
+}
+.tutor-rating span:last-child { color: var(--text-muted); font-weight: 400; font-size: 0.78rem; }
+
+.tutor-materias { display: flex; gap: 6px; flex-wrap: wrap; }
+.materia-chip {
+  background: var(--accent-glow); border: 1px solid var(--pending-border);
+  color: var(--accent-a); padding: 3px 10px;
+  border-radius: 100px; font-size: 0.75rem; font-weight: 500;
+}
+
+.tutor-card-footer {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 14px; border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+.tutor-price {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: 1.2rem; color: var(--accent-c);
+}
+.tutor-price span { font-size: 0.75rem; color: var(--text-muted); font-weight: 400; font-family: var(--font-body); }
+.tutor-nivel {
+  font-size: 0.76rem; color: var(--text-secondary); font-weight: 500;
+  background: var(--bg3); padding: 4px 10px; border-radius: 100px;
+}
+
+.no-results {
+  grid-column: 1 / -1; text-align: center;
+  padding: 60px 24px; color: var(--text-secondary);
+}
+.no-results-icon { font-size: 2.5rem; margin-bottom: 12px; display: block; }
+
+/* ---------- MODAL ---------- */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(18, 21, 40, 0.45); backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px; overflow-y: auto;
+  animation: fadeIn 0.2s ease;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.modal-box {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 4px);
+  padding: 36px; max-width: 460px; width: 100%;
+  position: relative; box-shadow: var(--shadow-lg);
+  animation: slideUpModal 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  margin: auto;
+}
+.modal-box-lg { max-width: 640px; }
+.modal-box-xl { max-width: 780px; padding: 0; overflow: hidden; }
+
+@keyframes slideUpModal {
+  from { opacity: 0; transform: translateY(30px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal-close {
+  position: absolute; top: 16px; right: 16px;
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text-secondary); width: 36px; height: 36px;
+  border-radius: 50%; cursor: pointer; font-size: 0.85rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.18s; z-index: 2;
+}
+.modal-close:hover { background: var(--danger-bg); color: var(--danger); border-color: var(--danger-border); }
+.modal-close:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 2px; }
+
+.modal-header {
+  text-align: center; margin-bottom: 28px;
+}
+.modal-logo { font-size: 2rem; color: var(--accent-a); }
+.modal-header h2 {
+  font-family: var(--font-display); font-size: 1.6rem;
+  font-weight: 800; color: var(--text-primary);
+  margin: 8px 0 6px; letter-spacing: -0.5px;
+}
+.modal-header p { color: var(--text-secondary); font-size: 0.9rem; }
+
+.modal-switch {
+  text-align: center; margin-top: 20px;
+  font-size: 0.88rem; color: var(--text-secondary);
+}
+
+/* ---------- FORMULARIOS ---------- */
+.field-group { margin-bottom: 18px; }
+.field-group label {
+  display: block; font-size: 0.85rem; font-weight: 600;
+  color: var(--text-primary); margin-bottom: 6px;
+}
+.required { color: var(--danger); }
+.field-group input[type="text"],
+.field-group input[type="email"],
+.field-group input[type="tel"],
+.field-group input[type="password"],
+.field-group select,
+.field-group textarea {
+  width: 100%; padding: 11px 14px;
+  background: var(--surface); border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-sm); color: var(--text-primary);
+  font-family: var(--font-body); font-size: 0.93rem;
+  transition: border-color 0.18s, box-shadow 0.18s;
+  outline: none;
+  min-height: 44px;
+}
+.field-group input::placeholder,
+.field-group textarea::placeholder { color: var(--text-muted); }
+.field-group input:focus,
+.field-group select:focus,
+.field-group textarea:focus {
+  border-color: var(--accent-a);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.field-group input.invalid,
+.field-group select.invalid,
+.field-group textarea.invalid {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+.field-group input.valid,
+.field-group textarea.valid,
+.field-group select.valid { border-color: var(--success); }
+.field-group textarea { resize: vertical; min-height: 80px; }
+
+.input-pw-wrap { position: relative; }
+.input-pw-wrap input { padding-right: 44px; }
+.toggle-pw {
+  position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer; font-size: 1rem;
+  color: var(--text-muted); padding: 4px; min-height: 32px; min-width: 32px;
+  border-radius: var(--radius-xs);
+}
+.toggle-pw:hover { color: var(--text-primary); background: var(--bg3); }
+.toggle-pw:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 2px; border-radius: 4px; }
+
+.field-error {
+  display: block; font-size: 0.8rem; color: var(--danger);
+  margin-top: 5px; min-height: 1.1em;
+  display: flex; align-items: center; gap: 4px;
+}
+.field-error:empty { display: none; }
+.field-hint {
+  display: block; font-size: 0.78rem; color: var(--text-muted); margin-top: 4px;
+}
+.field-privacy {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 0.78rem; color: var(--pending); margin-top: 4px;
+  background: var(--pending-bg); padding: 6px 10px; border-radius: var(--radius-xs);
+  border: 1px solid var(--pending-border);
+}
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 520px) { .form-row { grid-template-columns: 1fr; } }
+
+.form-msg {
+  padding: 12px 16px; border-radius: var(--radius-sm);
+  font-size: 0.88rem; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+}
+.form-msg.error { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-border); }
+.form-msg.success { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-border); }
+.form-msg.info { background: var(--pending-bg); color: var(--pending); border: 1px solid var(--pending-border); }
+
+/* ---------- SELECTORES TIPO ---------- */
+.tipo-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.tipo-opt { cursor: pointer; }
+.tipo-opt input { position: absolute; opacity: 0; width: 0; height: 0; }
+.tipo-card {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 6px; padding: 18px; border-radius: var(--radius-sm);
+  border: 2px solid var(--border-strong); background: var(--surface);
+  transition: all 0.18s; text-align: center;
+}
+.tipo-opt input:checked ~ .tipo-card {
+  border-color: var(--accent-a); background: var(--accent-glow);
+}
+.tipo-opt input:focus-visible ~ .tipo-card {
+  outline: 2px solid var(--accent-a); outline-offset: 2px;
+}
+.tipo-card:hover { border-color: var(--accent-a); background: var(--surface2); }
+.tipo-icon { font-size: 1.6rem; }
+.tipo-name { font-weight: 700; font-size: 0.92rem; color: var(--text-primary); }
+.tipo-desc { font-size: 0.78rem; color: var(--text-muted); }
+
+/* ---------- CUENTAS DEMO ---------- */
+.demo-accounts {
+  margin-top: 20px; padding: 16px;
+  background: var(--bg3); border-radius: var(--radius-sm);
+  border: 1px dashed var(--border-strong);
+}
+.demo-title { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 10px; text-align: center; font-weight: 600; }
+.demo-btns { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.demo-btn {
+  background: var(--surface); border: 1px solid var(--border-strong);
+  color: var(--text-secondary); font-family: var(--font-body);
+  font-size: 0.8rem; padding: 8px 14px; border-radius: var(--radius-xs);
+  cursor: pointer; transition: all 0.18s; min-height: 36px; font-weight: 500;
+}
+.demo-btn:hover { background: var(--accent-glow); color: var(--accent-a); border-color: var(--accent-a); }
+.demo-btn:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 2px; }
+
+/* ---------- PERFIL DE TUTOR EN MODAL ---------- */
+.tutor-profile-modal { display: grid; grid-template-columns: 280px 1fr; max-height: 85vh; }
+@media (max-width: 720px) {
+  .tutor-profile-modal { grid-template-columns: 1fr; max-height: 90vh; overflow-y: auto; }
+}
+
+.tutor-profile-sidebar {
+  padding: 32px; background: var(--bg3);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 20px;
+  overflow-y: auto;
+}
+.tutor-profile-main { padding: 32px; display: flex; flex-direction: column; gap: 24px; overflow-y: auto; }
+
+@media (max-width: 720px) {
+  .tutor-profile-sidebar { border-right: none; border-bottom: 1px solid var(--border); padding: 24px; }
+  .tutor-profile-main { padding: 24px; }
+}
+
+.profile-avatar-lg {
+  width: 80px; height: 80px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 800; font-size: 1.8rem;
+  color: #fff; margin-bottom: 4px; box-shadow: var(--shadow);
+}
+.profile-name-lg {
+  font-family: var(--font-display); font-weight: 800; font-size: 1.3rem;
+  color: var(--text-primary); letter-spacing: -0.3px;
+}
+.profile-carrera-lg { font-size: 0.85rem; color: var(--text-muted); margin-top: 2px; }
+
+.profile-stat {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 0.88rem; color: var(--text-secondary);
+  padding: 4px 0;
+}
+.profile-stat-icon { font-size: 1.1rem; width: 20px; text-align: center; flex-shrink: 0; }
+
+.profile-price-lg {
+  font-family: var(--font-display); font-size: 2rem; font-weight: 800;
+  color: var(--accent-c);
+}
+.profile-price-lg span { font-size: 0.9rem; color: var(--text-muted); font-weight: 400; font-family: var(--font-body); }
+
+.btn-solicitar {
+  width: 100%; background: linear-gradient(135deg, var(--accent-a), var(--accent-b));
+  color: #fff; font-family: var(--font-body); font-weight: 700;
+  font-size: 1rem; padding: 14px; border: none;
+  border-radius: var(--radius-sm); cursor: pointer;
+  transition: all 0.2s; box-shadow: var(--shadow-accent); min-height: 50px;
+}
+.btn-solicitar:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(84, 101, 255, 0.34); }
+.btn-solicitar:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 3px; }
+.btn-solicitar:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.login-prompt {
+  background: var(--pending-bg); border: 1px solid var(--pending-border);
+  border-radius: var(--radius-sm); padding: 16px; text-align: center;
+  font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5;
+}
+.login-prompt strong { color: var(--pending); }
+.login-prompt p { margin-bottom: 10px; }
+
+.profile-section-title {
+  font-family: var(--font-display); font-weight: 700; font-size: 1rem;
+  color: var(--text-primary); margin-bottom: 12px;
+}
+
+/* ---------- CALENDARIO UNIFICADO (vista pública + editor) ---------- */
+.schedule-wrap {
+  background: var(--bg3);
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  margin-top: 6px;
+}
+.schedule-legend {
+  display: flex; gap: 16px; flex-wrap: wrap;
+  font-size: 0.78rem; color: var(--text-secondary);
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed var(--border);
+}
+.schedule-legend-item { display: flex; align-items: center; gap: 6px; }
+.schedule-legend-dot {
+  width: 14px; height: 14px; border-radius: 3px;
+  border: 1px solid transparent; flex-shrink: 0;
+}
+.schedule-grid {
+  display: grid;
+  grid-template-columns: 64px repeat(7, 1fr);
+  gap: 4px;
+}
+.schedule-corner {
+  font-size: 0.66rem; font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.6px;
+  display: flex; align-items: center; justify-content: center;
+  padding: 6px 2px;
+}
+.schedule-day-header {
+  font-size: 0.72rem; font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase; letter-spacing: 0.6px;
+  text-align: center;
+  padding: 8px 2px;
+  background: var(--surface);
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border);
+}
+.schedule-hour {
+  font-size: 0.78rem; font-weight: 600;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+  display: flex; align-items: center; justify-content: flex-end;
+  padding-right: 10px;
+  border-right: 1px solid var(--border);
+}
+.schedule-slot {
+  min-height: 40px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.72rem; font-weight: 600;
+  cursor: default;
+  transition: all 0.15s;
+  color: var(--text-muted);
+  position: relative;
+  font-family: var(--font-body);
+  padding: 0;
+}
+/* Disponible — verde clickeable (vista pública) */
+.schedule-slot.available {
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+  color: #065f46;
+  cursor: pointer;
+}
+.schedule-slot.available::before {
+  content: '●'; font-size: 0.55rem; opacity: 0.7;
+}
+.schedule-slot.available:hover {
+  background: #d1fae5; border-color: #10b981;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.2);
+}
+.schedule-slot.available:focus-visible {
+  outline: 2px solid #10b981; outline-offset: 2px;
+}
+/* Ocupado — rojo deshabilitado (vista pública) */
+.schedule-slot.occupied {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #991b1b;
+  cursor: not-allowed;
+}
+.schedule-slot.occupied::before {
+  content: '✕'; font-size: 0.72rem; opacity: 0.7;
+}
+/* Vacío — sin marcar (vista pública) */
+.schedule-slot.empty {
+  background: transparent;
+  border-color: var(--border);
+  border-style: dotted;
+  opacity: 0.5;
+}
+.schedule-slot.empty::before {
+  content: '–'; color: var(--text-muted); opacity: 0.4;
+}
+/* Editable — vista editor, aún sin marcar */
+.schedule-slot.editable {
+  background: var(--surface);
+  border: 1px dashed var(--border-strong);
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.schedule-slot.editable::before {
+  content: '+'; font-size: 1rem; font-weight: 400; opacity: 0.35;
+}
+.schedule-slot.editable:hover {
+  background: var(--accent-glow);
+  border-style: solid;
+  border-color: var(--accent-a);
+}
+.schedule-slot.editable:hover::before { opacity: 0.8; color: var(--accent-a); }
+.schedule-slot.editable:focus-visible {
+  outline: 2px solid var(--accent-a); outline-offset: 2px;
+}
+/* Seleccionado — en ambos contextos */
+.schedule-slot.selected {
+  background: linear-gradient(135deg, var(--accent-a), var(--accent-b));
+  border: 1px solid var(--accent-a);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(84, 101, 255, 0.35);
+  cursor: pointer;
+}
+.schedule-slot.selected::before {
+  content: '✓'; font-size: 0.9rem;
+}
+.schedule-slot.selected:hover { transform: translateY(-1px); }
+.schedule-slot.selected:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 2px; }
+
+@media (max-width: 640px) {
+  .schedule-wrap { padding: 10px; }
+  .schedule-grid { grid-template-columns: 50px repeat(7, 1fr); gap: 3px; }
+  .schedule-slot { min-height: 34px; }
+  .schedule-hour { font-size: 0.7rem; padding-right: 6px; }
+  .schedule-day-header { font-size: 0.64rem; padding: 6px 1px; }
+  .schedule-corner { font-size: 0.58rem; }
+  .schedule-legend { font-size: 0.72rem; gap: 10px; }
+}
+@media (max-width: 420px) {
+  .schedule-grid { grid-template-columns: 42px repeat(7, 1fr); gap: 2px; }
+  .schedule-slot { min-height: 30px; }
+  .schedule-hour { font-size: 0.64rem; padding-right: 4px; }
+}
+
+/* ---------- STARS ---------- */
+.star-rating {
+  display: flex; gap: 4px;
+}
+.star-label {
+  cursor: pointer; font-size: 2rem; color: #d1d5db;
+  transition: color 0.15s; user-select: none;
+  display: inline-flex; align-items: center;
+  position: relative;
+}
+.star-label input { position: absolute; opacity: 0; width: 0; height: 0; }
+.star-label input:focus-visible + span { outline: 2px solid var(--accent-a); outline-offset: 3px; border-radius: 3px; }
+.star-rating:has(.star-label:nth-child(1) input:checked) .star-label:nth-child(1) > span,
+.star-rating:has(.star-label:nth-child(2) input:checked) .star-label:nth-child(-n+2) > span,
+.star-rating:has(.star-label:nth-child(3) input:checked) .star-label:nth-child(-n+3) > span,
+.star-rating:has(.star-label:nth-child(4) input:checked) .star-label:nth-child(-n+4) > span,
+.star-rating:has(.star-label:nth-child(5) input:checked) .star-label > span { color: #f59e0b; }
+.star-label:hover > span, .star-label:hover ~ .star-label > span { color: #f59e0b; }
+
+/* ---------- RESEÑAS ---------- */
+.review-list { display: flex; flex-direction: column; gap: 10px; }
+.review-item {
+  background: var(--bg3); border-radius: var(--radius-sm);
+  padding: 14px; border: 1px solid var(--border);
+}
+.review-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.review-avatar {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--accent-glow); display: flex; align-items: center; justify-content: center;
+  font-size: 0.72rem; font-weight: 700; color: var(--accent-a);
+}
+.review-name { font-weight: 600; font-size: 0.85rem; color: var(--text-primary); }
+.review-stars { color: #f59e0b; font-size: 0.82rem; margin-left: auto; }
+.review-comment { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+
+/* ---------- RESUMEN DE SOLICITUD ---------- */
+.summary-box {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 18px;
+  margin-bottom: 20px;
+}
+.summary-title {
+  font-family: var(--font-display); font-weight: 700; font-size: 1rem;
+  color: var(--text-primary); margin-bottom: 12px;
+}
+.summary-row {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--border);
+  font-size: 0.9rem;
+}
+.summary-row:last-child { border-bottom: none; }
+.summary-label { color: var(--text-secondary); font-weight: 500; }
+.summary-value { color: var(--text-primary); font-weight: 600; text-align: right; }
+
+/* ---------- DASHBOARD SOLICITUDES ---------- */
+.dashboard-section {
+  background: var(--bg2); border-top: 1px solid var(--border); padding: 80px 24px;
+}
+@media (max-width: 620px) { .dashboard-section { padding: 50px 16px; } }
+
+.dashboard-tabs {
+  display: flex; gap: 4px; justify-content: center;
+  margin-bottom: 28px;
+  background: var(--bg3);
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  max-width: 400px;
+  margin-left: auto; margin-right: auto;
+}
+.dashboard-tab {
+  flex: 1; padding: 10px 16px;
+  background: transparent; border: none;
+  font-family: var(--font-body); font-size: 0.88rem; font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer; transition: all 0.18s;
+  border-radius: var(--radius-xs);
+  min-height: 40px;
+}
+.dashboard-tab.active {
+  background: var(--surface);
+  color: var(--accent-a);
+  box-shadow: var(--shadow-sm);
+}
+.dashboard-tab:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 2px; }
+
+.solicitudes-list { display: flex; flex-direction: column; gap: 16px; max-width: 780px; margin: 0 auto; }
+.solicitud-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px 22px;
+  display: flex; align-items: flex-start; gap: 16px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.18s;
+}
+.solicitud-card:hover { box-shadow: var(--shadow); }
+.solicitud-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; color: #fff; flex-shrink: 0;
+  font-size: 0.9rem;
+  box-shadow: var(--shadow-sm);
+}
+.solicitud-info { flex: 1; min-width: 0; }
+.solicitud-name {
+  font-weight: 700; font-size: 0.95rem; color: var(--text-primary);
+  margin-bottom: 2px;
+}
+.solicitud-detail { font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 8px; }
+.solicitud-note {
+  font-size: 0.82rem; color: var(--text-secondary);
+  background: var(--bg3); padding: 6px 10px;
+  border-radius: var(--radius-xs); margin-top: 6px;
+  border-left: 3px solid var(--accent-a);
+}
+.solicitud-timer { font-size: 0.78rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+.timer-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--accent-a);
+  animation: pulseDot 1.5s ease-in-out infinite;
+}
+@keyframes pulseDot { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+.solicitud-actions { display: flex; gap: 8px; flex-shrink: 0; flex-wrap: wrap; align-items: flex-start; }
+
+@media (max-width: 560px) {
+  .solicitud-card { flex-direction: column; }
+  .solicitud-actions { width: 100%; justify-content: stretch; }
+  .solicitud-actions > * { flex: 1; }
+}
+
+/* Badges de estado */
+.status-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 12px; border-radius: 100px;
+  font-size: 0.76rem; font-weight: 700; letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+.status-pending { background: var(--pending-bg); color: var(--pending); border: 1px solid var(--pending-border); }
+.status-accepted { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-border); }
+.status-rejected { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-border); }
+.status-timeout { background: var(--warning-bg); color: var(--warning); border: 1px solid var(--warning-border); }
+
+/* Sugerencias alternativas */
+.alternative-suggestions {
+  background: var(--warning-bg); border: 1px solid var(--warning-border);
+  border-radius: var(--radius-sm); padding: 14px; margin-top: 10px;
+}
+.alt-title {
+  font-size: 0.82rem; font-weight: 700; color: var(--warning);
+  margin-bottom: 10px;
+}
+.alt-list { display: flex; flex-direction: column; gap: 8px; }
+.alt-item {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px;
+  font-size: 0.82rem; color: var(--text-secondary);
+  padding: 6px 0;
+  flex-wrap: wrap;
+}
+.alt-item-name { display: flex; align-items: center; gap: 8px; }
+.alt-avatar {
+  width: 26px; height: 26px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.62rem; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+
+/* Contacto WhatsApp desbloqueado */
+.contact-reveal {
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  border: 1px solid var(--success-border);
+  border-radius: var(--radius-sm); padding: 14px 16px; margin-top: 10px;
+}
+.contact-label {
+  font-size: 0.78rem; font-weight: 700; color: #065f46;
+  margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
+}
+.contact-value {
+  font-size: 1rem; color: var(--text-primary); font-weight: 700;
+  font-family: var(--font-display); letter-spacing: 0.3px;
+  margin-bottom: 10px;
+}
+.contact-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn-whatsapp {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 6px;
+  background: #25D366; color: #fff;
+  font-family: var(--font-body); font-weight: 600; font-size: 0.85rem;
+  padding: 8px 14px; border: none;
+  border-radius: var(--radius-sm); cursor: pointer;
+  transition: all 0.18s; text-decoration: none; min-height: 40px;
+}
+.btn-whatsapp:hover { background: #1faa55; opacity: 1; transform: translateY(-1px); }
+.btn-whatsapp:focus-visible { outline: 2px solid #25D366; outline-offset: 2px; }
+.btn-copy {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 6px;
+  background: var(--surface); color: var(--text-primary);
+  font-family: var(--font-body); font-weight: 600; font-size: 0.85rem;
+  padding: 8px 14px; border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm); cursor: pointer;
+  transition: all 0.18s; min-height: 40px;
+}
+.btn-copy:hover { border-color: var(--accent-a); color: var(--accent-a); }
+.btn-copy:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 2px; }
+
+/* ---------- TOAST ---------- */
+.toast-container {
+  position: fixed; bottom: 24px; right: 24px; z-index: 2000;
+  display: flex; flex-direction: column; gap: 10px;
+  pointer-events: none;
+  max-width: calc(100vw - 48px);
+}
+.toast {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 14px 18px; border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg); font-size: 0.88rem;
+  min-width: 280px; max-width: 380px;
+  animation: toastIn 0.35s cubic-bezier(0.16,1,0.3,1) both;
+  pointer-events: all;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left-width: 4px;
+}
+.toast-success { border-left-color: var(--success); color: var(--text-primary); }
+.toast-success .toast-icon { color: var(--success); }
+.toast-error { border-left-color: var(--danger); color: var(--text-primary); }
+.toast-error .toast-icon { color: var(--danger); }
+.toast-info { border-left-color: var(--accent-a); color: var(--text-primary); }
+.toast-info .toast-icon { color: var(--accent-a); }
+.toast-warning { border-left-color: var(--warning); color: var(--text-primary); }
+.toast-warning .toast-icon { color: var(--warning); }
+.toast-icon { font-size: 1.2rem; flex-shrink: 0; line-height: 1.2; }
+.toast-text { flex: 1; line-height: 1.4; color: var(--text-primary); }
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(20px) scale(0.95); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+@keyframes toastOut {
+  to { opacity: 0; transform: translateX(20px) scale(0.95); }
+}
+
+@media (max-width: 540px) {
+  .toast-container { left: 16px; right: 16px; bottom: 16px; }
+  .toast { min-width: auto; max-width: 100%; }
+}
+
+/* ---------- FOOTER ---------- */
+.footer {
+  background: var(--surface); border-top: 1px solid var(--border);
+  padding: 32px 24px;
+}
+.footer-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+}
+.footer-logo {
+  font-family: var(--font-display); font-size: 1.05rem; font-weight: 700;
+  color: var(--text-primary); display: flex; align-items: center; gap: 6px;
+}
+.footer-logo strong { color: var(--accent-a); }
+.footer-copy { font-size: 0.82rem; color: var(--text-muted); margin-right: auto; }
+.footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+.footer-links a { font-size: 0.82rem; color: var(--text-muted); }
+.footer-links a:hover { color: var(--accent-a); }
+
+@media (max-width: 620px) {
+  .footer-inner { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .footer-copy { margin-right: 0; }
+}
+
+/* ---------- SCROLLBAR ---------- */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg3); }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* ---------- PANEL DE PERFIL DE TUTOR (edición) ---------- */
+.tutor-edit-section {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  padding: 80px 24px;
+}
+.tutor-edit-box {
+  max-width: 680px; margin: 0 auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  box-shadow: var(--shadow-sm);
+}
+@media (max-width: 540px) { .tutor-edit-box { padding: 24px; } .tutor-edit-section { padding: 50px 16px; } }
+
+.tutor-edit-title {
+  font-family: var(--font-display);
+  font-weight: 800; font-size: 1.5rem;
+  color: var(--text-primary); margin-bottom: 8px;
+  letter-spacing: -0.4px;
+}
+.tutor-edit-sub { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 24px; }
+
+  </style>
+</head>
+<body>
+
+<header class="navbar" role="banner">
+  <div class="nav-inner">
+    <a href="#" class="logo" aria-label="StudySync inicio">
+      <span class="logo-icon" aria-hidden="true">⬡</span>
+      <span>Study<strong>Sync</strong></span>
+    </a>
+    <nav class="nav-links" aria-label="Navegación principal">
+      <a href="#tutores" class="nav-link">Explorar tutores</a>
+    </nav>
+    <div class="nav-auth" id="nav-auth">
+      <button class="btn-ghost" id="btn-open-login" aria-haspopup="dialog">Iniciar sesión</button>
+      <button class="btn-primary" id="btn-open-register" aria-haspopup="dialog">Crear cuenta</button>
+    </div>
+    <div class="nav-user hidden" id="nav-user">
+      <span class="user-greeting" id="user-greeting"></span>
+      <button class="btn-ghost" id="btn-dashboard">Mi panel</button>
+      <button class="btn-outline-sm" id="btn-logout">Salir</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero" aria-label="Sección principal">
+  <div class="hero-bg-shapes" aria-hidden="true">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="hero-grid"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">🎓 Mentorías entre estudiantes universitarios</div>
+    <h1 class="hero-title">
+      Aprende de quien<br/>
+      <span class="hero-accent">ya pasó por ahí</span>
+    </h1>
+    <div class="hero-search-bar" role="search">
+      <label for="hero-search" class="sr-only">Buscar materia o tutor</label>
+      <input type="text" id="hero-search" placeholder="¿Qué materia necesitas?" class="hero-input" autocomplete="off" />
+      <button class="btn-primary hero-btn" id="hero-search-btn">Buscar tutor →</button>
+    </div>
+    <div class="hero-tags" aria-label="Materias populares">
+      <span class="hero-tag-label">Popular:</span>
+      <button class="tag-pill" data-filter="Cálculo">Cálculo</button>
+      <button class="tag-pill" data-filter="Programación">Programación</button>
+      <button class="tag-pill" data-filter="Estadística">Estadística</button>
+      <button class="tag-pill" data-filter="Física">Física</button>
+    </div>
+  </div>
+  <div class="hero-visual" aria-hidden="true">
+    <div class="hero-card-float card-float-1">
+      <div class="hcf-avatar" style="background: linear-gradient(135deg,#5465ff,#8b5cf6)">MG</div>
+      <div>
+        <div class="hcf-name">María G.</div>
+        <div class="hcf-sub">⭐ 4.9 · Cálculo</div>
+      </div>
+    </div>
+    <div class="hero-card-float card-float-2">
+      <span class="hcf-icon" style="color:var(--success)">✓</span>
+      <span>Solicitud aceptada</span>
+    </div>
+    <div class="hero-card-float card-float-3">
+      <span class="hcf-icon" style="color:var(--accent-b)">📅</span>
+      <span>Hoy 4:00 PM disponible</span>
+    </div>
+  </div>
+</section>
+
+<section class="tutores-section" id="tutores" aria-labelledby="tutores-title">
+  <div class="container">
+    <div class="section-header">
+      <h2 id="tutores-title" class="section-title">Tutores disponibles</h2>
+      <p class="section-sub" id="results-count" aria-live="polite" aria-atomic="true">Mostrando todos los tutores</p>
+    </div>
+
+    <div class="tutores-layout">
+      <aside class="filters-panel" aria-label="Panel de filtros">
+        <div class="filters-header">
+          <h3>Filtros</h3>
+          <button class="btn-link" id="clear-filters" aria-label="Limpiar todos los filtros">Limpiar</button>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label" for="filter-materia">Materia</label>
+          <input type="text" id="filter-materia" class="filter-input" placeholder="Ej: Cálculo, calculo, álgebra…" aria-label="Filtrar por materia, acepta con o sin tildes" autocomplete="off" list="filter-materia-list" />
+          <datalist id="filter-materia-list">
+            <option value="Cálculo"></option>
+            <option value="Programación"></option>
+            <option value="Estadística"></option>
+            <option value="Física"></option>
+            <option value="Química"></option>
+            <option value="Álgebra"></option>
+            <option value="Economía"></option>
+            <option value="Matemáticas"></option>
+          </datalist>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Precio máximo: <strong id="price-display">$50/h</strong></label>
+          <input type="range" id="filter-price" min="5" max="50" value="50" step="1" class="filter-range" aria-label="Precio máximo por hora" aria-valuemin="5" aria-valuemax="50" aria-valuenow="50" />
+          <div class="range-labels" aria-hidden="true">
+            <span>$5</span><span>$50</span>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <fieldset class="filter-fieldset">
+            <legend class="filter-label">Calificación mínima</legend>
+            <div class="rating-options" role="radiogroup" aria-label="Calificación mínima">
+              <label class="rating-opt"><input type="radio" name="rating" value="0" checked /> Todas</label>
+              <label class="rating-opt"><input type="radio" name="rating" value="3" /> ⭐ 3 o más</label>
+              <label class="rating-opt"><input type="radio" name="rating" value="4" /> ⭐ 4 o más</label>
+              <label class="rating-opt"><input type="radio" name="rating" value="4.5" /> ⭐ 4.5 o más</label>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label" for="filter-nivel">Semestre</label>
+          <select id="filter-nivel" class="filter-select" aria-label="Filtrar por semestre">
+            <option value="">Todos</option>
+            <option value="1er Semestre">1er Semestre</option>
+            <option value="2do Semestre">2do Semestre</option>
+            <option value="3er Semestre">3er Semestre</option>
+            <option value="4to Semestre">4to Semestre</option>
+            <option value="5to Semestre">5to Semestre</option>
+            <option value="6to Semestre">6to Semestre</option>
+            <option value="7mo Semestre">7mo Semestre</option>
+            <option value="8vo Semestre">8vo Semestre</option>
+            <option value="9no Semestre">9no Semestre</option>
+            <option value="10mo Semestre">10mo Semestre</option>
+          </select>
+        </div>
+      </aside>
+
+      <div class="tutores-grid" id="tutores-grid" role="list" aria-label="Lista de tutores"></div>
+    </div>
+  </div>
+</section>
+
+<section class="dashboard-section hidden" id="dashboard-section" aria-labelledby="dashboard-title">
+  <div class="container">
+    <div class="section-header">
+      <h2 id="dashboard-title" class="section-title">Mi panel</h2>
+      <p class="section-sub" id="dashboard-sub">Gestiona tus solicitudes de tutoría</p>
+    </div>
+    <div class="dashboard-tabs hidden" id="dashboard-tabs" role="tablist"></div>
+    <div id="dashboard-content" aria-live="polite"></div>
+  </div>
+</section>
+
+<section class="tutor-edit-section hidden" id="tutor-edit-section" aria-labelledby="tutor-edit-title">
+  <div class="tutor-edit-box">
+    <h2 id="tutor-edit-title" class="tutor-edit-title">Mi perfil de tutor</h2>
+    <p class="tutor-edit-sub">Actualiza tu materia, teléfono y horarios disponibles</p>
+    <form id="form-tutor-profile" novalidate>
+      <div class="field-group">
+        <label for="tp-materia">Materia y profesor <span class="required" aria-hidden="true">*</span></label>
+        <textarea id="tp-materia" rows="2" placeholder="Ej. Cálculo Diferencial con Dr. Pérez" aria-required="true" aria-describedby="tp-materia-err"></textarea>
+        <span class="field-error" id="tp-materia-err" role="alert" aria-live="polite"></span>
+      </div>
+      <div class="field-group">
+        <label for="tp-telefono">Número de WhatsApp <span class="required" aria-hidden="true">*</span></label>
+        <input type="tel" id="tp-telefono" placeholder="Ej. 0991234567" aria-required="true" aria-describedby="tp-telefono-err tp-telefono-priv" />
+        <span class="field-privacy" id="tp-telefono-priv">🔒 Tu número solo se mostrará a los estudiantes cuyas solicitudes tú aceptes</span>
+        <span class="field-error" id="tp-telefono-err" role="alert" aria-live="polite"></span>
+      </div>
+      <div class="field-group">
+        <label for="tp-precio">Precio por hora (USD) <span class="required" aria-hidden="true">*</span></label>
+        <input type="text" id="tp-precio" inputmode="numeric" placeholder="Ej. 15" aria-required="true" aria-describedby="tp-precio-err" />
+        <span class="field-error" id="tp-precio-err" role="alert" aria-live="polite"></span>
+      </div>
+      <div class="field-group">
+        <label>Disponibilidad semanal <span class="required" aria-hidden="true">*</span></label>
+        <div id="tp-availability" class="schedule-mount"></div>
+        <span class="field-hint">Toca los horarios en los que estarás disponible. Aparecerán sombreados en tu perfil público.</span>
+        <span class="field-error" id="tp-avail-err" role="alert" aria-live="polite"></span>
+      </div>
+      <div class="form-msg hidden" id="tp-msg"></div>
+      <button type="submit" class="btn-primary btn-full">Guardar cambios</button>
+    </form>
+  </div>
+</section>
+
+<div class="modal-overlay hidden" id="modal-login" role="dialog" aria-modal="true" aria-labelledby="login-title">
+  <div class="modal-box">
+    <button class="modal-close" id="close-login" aria-label="Cerrar modal de inicio de sesión">✕</button>
+    <div class="modal-header">
+      <span class="modal-logo" aria-hidden="true">⬡</span>
+      <h2 id="login-title">Bienvenido de vuelta</h2>
+      <p>Inicia sesión para continuar</p>
+    </div>
+    <form id="form-login" novalidate aria-label="Formulario de inicio de sesión">
+      <div class="field-group">
+        <label for="login-email">Correo electrónico</label>
+        <input type="email" id="login-email" autocomplete="email" placeholder="tu@correo.com" aria-required="true" aria-describedby="login-email-err" />
+        <span class="field-error" id="login-email-err" role="alert" aria-live="polite"></span>
+      </div>
+      <div class="field-group">
+        <label for="login-password">Contraseña</label>
+        <div class="input-pw-wrap">
+          <input type="password" id="login-password" autocomplete="current-password" placeholder="••••••" aria-required="true" aria-describedby="login-password-err" />
+          <button type="button" class="toggle-pw" aria-label="Mostrar contraseña" data-target="login-password">👁</button>
+        </div>
+        <span class="field-error" id="login-password-err" role="alert" aria-live="polite"></span>
+      </div>
+      <div class="form-msg hidden" id="login-msg" role="alert" aria-live="assertive"></div>
+      <button type="submit" class="btn-primary btn-full">Iniciar sesión</button>
+    </form>
+    <p class="modal-switch">¿No tienes cuenta? <button class="btn-link" id="switch-to-register">Crear cuenta gratis</button></p>
+
+    <div class="demo-accounts">
+      <p class="demo-title">Cuentas de prueba</p>
+      <div class="demo-btns">
+        <button class="demo-btn" data-email="estudiante@demo.com" data-pw="demo123">Entrar como estudiante</button>
+        <button class="demo-btn" data-email="tutor@demo.com" data-pw="demo123">Entrar como tutor</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="modal-register" role="dialog" aria-modal="true" aria-labelledby="register-title">
+  <div class="modal-box modal-box-lg">
+    <button class="modal-close" id="close-register" aria-label="Cerrar modal de registro">✕</button>
+    <div class="modal-header">
+      <span class="modal-logo" aria-hidden="true">⬡</span>
+      <h2 id="register-title">Crear cuenta</h2>
+      <p>Únete a la comunidad StudySync</p>
+    </div>
+    <form id="form-register" novalidate aria-label="Formulario de registro">
+      <div class="field-group">
+        <label>Tipo de usuario <span class="required" aria-hidden="true">*</span></label>
+        <div class="tipo-selector" role="radiogroup" aria-label="Selecciona tipo de usuario" aria-describedby="reg-tipo-err">
+          <label class="tipo-opt">
+            <input type="radio" name="tipo-usuario" value="Estudiante" />
+            <span class="tipo-card">
+              <span class="tipo-icon" aria-hidden="true">📚</span>
+              <span class="tipo-name">Estudiante</span>
+              <span class="tipo-desc">Busco tutorías</span>
+            </span>
+          </label>
+          <label class="tipo-opt">
+            <input type="radio" name="tipo-usuario" value="Tutor" />
+            <span class="tipo-card">
+              <span class="tipo-icon" aria-hidden="true">🎓</span>
+              <span class="tipo-name">Tutor</span>
+              <span class="tipo-desc">Ofrezco mentorías</span>
+            </span>
+          </label>
+        </div>
+        <span class="field-error" id="reg-tipo-err" role="alert" aria-live="polite"></span>
+      </div>
+
+      <div class="form-row">
+        <div class="field-group">
+          <label for="reg-nombre">Nombre <span class="required" aria-hidden="true">*</span></label>
+          <input type="text" id="reg-nombre" autocomplete="given-name" placeholder="Tu nombre" aria-required="true" aria-describedby="reg-nombre-err" />
+          <span class="field-error" id="reg-nombre-err" role="alert" aria-live="polite"></span>
+        </div>
+        <div class="field-group">
+          <label for="reg-apellido">Apellido <span class="required" aria-hidden="true">*</span></label>
+          <input type="text" id="reg-apellido" autocomplete="family-name" placeholder="Tu apellido" aria-required="true" aria-describedby="reg-apellido-err" />
+          <span class="field-error" id="reg-apellido-err" role="alert" aria-live="polite"></span>
+        </div>
+      </div>
+      <div class="field-group">
+        <label for="reg-email">Correo electrónico <span class="required" aria-hidden="true">*</span></label>
+        <input type="email" id="reg-email" autocomplete="email" placeholder="tu@correo.com" aria-required="true" aria-describedby="reg-email-err" />
+        <span class="field-error" id="reg-email-err" role="alert" aria-live="polite"></span>
+      </div>
+      <div class="field-group">
+        <label for="reg-password">Contraseña <span class="required" aria-hidden="true">*</span></label>
+        <div class="input-pw-wrap">
+          <input type="password" id="reg-password" autocomplete="new-password" placeholder="Mínimo 6 caracteres" aria-required="true" aria-describedby="reg-password-err reg-pw-hint" />
+          <button type="button" class="toggle-pw" aria-label="Mostrar contraseña" data-target="reg-password">👁</button>
+        </div>
+        <span class="field-hint" id="reg-pw-hint">Mínimo 6 caracteres</span>
+        <span class="field-error" id="reg-password-err" role="alert" aria-live="polite"></span>
+      </div>
+      <div class="form-row">
+        <div class="field-group">
+          <label for="reg-carrera">Carrera <span class="required" aria-hidden="true">*</span></label>
+          <input type="text" id="reg-carrera" placeholder="Ej. Ingeniería Civil" aria-required="true" aria-describedby="reg-carrera-err" />
+          <span class="field-error" id="reg-carrera-err" role="alert" aria-live="polite"></span>
+        </div>
+        <div class="field-group">
+          <label for="reg-nivel">Semestre <span class="required" aria-hidden="true">*</span></label>
+          <select id="reg-nivel" aria-required="true" aria-describedby="reg-nivel-err">
+            <option value="">Selecciona...</option>
+            <option value="1er Semestre">1er Semestre</option>
+            <option value="2do Semestre">2do Semestre</option>
+            <option value="3er Semestre">3er Semestre</option>
+            <option value="4to Semestre">4to Semestre</option>
+            <option value="5to Semestre">5to Semestre</option>
+            <option value="6to Semestre">6to Semestre</option>
+            <option value="7mo Semestre">7mo Semestre</option>
+            <option value="8vo Semestre">8vo Semestre</option>
+            <option value="9no Semestre">9no Semestre</option>
+            <option value="10mo Semestre">10mo Semestre</option>
+          </select>
+          <span class="field-error" id="reg-nivel-err" role="alert" aria-live="polite"></span>
+        </div>
+      </div>
+
+      <div id="tutor-extra-fields" class="hidden">
+        <div class="field-group">
+          <label for="reg-materias">Materia y profesor <span class="required" aria-hidden="true">*</span></label>
+          <textarea id="reg-materias" rows="2" placeholder="Ej. Cálculo Diferencial con Dr. Pérez"></textarea>
+          <span class="field-hint">Escribe la materia y el profesor con quien la recibiste</span>
+          <span class="field-error" id="reg-materias-err" role="alert" aria-live="polite"></span>
+        </div>
+        <div class="field-group">
+          <label for="reg-telefono">Número de WhatsApp <span class="required" aria-hidden="true">*</span></label>
+          <input type="tel" id="reg-telefono" placeholder="Ej. 0991234567" aria-describedby="reg-telefono-err reg-tel-priv" />
+          <span class="field-privacy" id="reg-tel-priv">🔒 Tu número permanece privado. Solo se mostrará al estudiante cuando tú aceptes su solicitud de tutoría</span>
+          <span class="field-error" id="reg-telefono-err" role="alert" aria-live="polite"></span>
+        </div>
+        <div class="field-group">
+          <label for="reg-precio">Precio por hora (USD) <span class="required" aria-hidden="true">*</span></label>
+          <input type="text" id="reg-precio" inputmode="numeric" placeholder="Ej. 15" />
+          <span class="field-error" id="reg-precio-err" role="alert" aria-live="polite"></span>
+        </div>
+        <div class="field-group">
+          <label>Disponibilidad semanal <span class="required" aria-hidden="true">*</span></label>
+          <div id="reg-availability" class="schedule-mount"></div>
+          <span class="field-hint">Toca los horarios en los que estarás disponible</span>
+          <span class="field-error" id="reg-avail-err" role="alert" aria-live="polite"></span>
+        </div>
+      </div>
+
+      <div class="form-msg hidden" id="register-msg" role="alert" aria-live="assertive"></div>
+      <button type="submit" class="btn-primary btn-full">Crear mi cuenta</button>
+    </form>
+    <p class="modal-switch">¿Ya tienes cuenta? <button class="btn-link" id="switch-to-login">Iniciar sesión</button></p>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="modal-tutor" role="dialog" aria-modal="true" aria-labelledby="tutor-modal-name">
+  <div class="modal-box modal-box-xl">
+    <button class="modal-close" id="close-tutor" aria-label="Cerrar perfil de tutor">✕</button>
+    <div id="tutor-modal-content"></div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="modal-confirm" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+  <div class="modal-box">
+    <button class="modal-close" id="close-confirm" aria-label="Cerrar confirmación">✕</button>
+    <div class="modal-header">
+      <span class="modal-logo" aria-hidden="true">📋</span>
+      <h2 id="confirm-title">Confirma tu solicitud</h2>
+      <p>Revisa los datos antes de enviar</p>
+    </div>
+    <div id="confirm-summary"></div>
+    <div class="field-group">
+      <label for="confirm-note">Mensaje al tutor (opcional)</label>
+      <textarea id="confirm-note" rows="2" placeholder="Ej. Necesito ayuda con derivadas, tema específico..." maxlength="200"></textarea>
+      <span class="field-hint">Máximo 200 caracteres</span>
+    </div>
+    <div style="display:flex; gap: 10px; flex-wrap: wrap;">
+      <button type="button" class="btn-secondary" id="cancel-confirm" style="flex:1">Cancelar</button>
+      <button type="button" class="btn-primary" id="submit-confirm" style="flex:2">Enviar solicitud</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="modal-resena" role="dialog" aria-modal="true" aria-labelledby="resena-title">
+  <div class="modal-box">
+    <button class="modal-close" id="close-resena" aria-label="Cerrar modal de reseña">✕</button>
+    <div class="modal-header">
+      <span class="modal-logo" aria-hidden="true">⭐</span>
+      <h2 id="resena-title">¿Cómo fue tu sesión?</h2>
+      <p id="resena-subtitle">Tu opinión ayuda a otros estudiantes a elegir mejor</p>
+    </div>
+    <form id="form-resena" novalidate aria-label="Formulario de reseña">
+      <input type="hidden" id="resena-tutor-id" />
+      <div class="field-group">
+        <label>Calificación <span class="required" aria-hidden="true">*</span></label>
+        <div class="star-rating" role="radiogroup" aria-label="Calificación de 1 a 5 estrellas" id="star-rating-group">
+          <label class="star-label" aria-label="1 estrella"><input type="radio" name="stars" value="1" /><span aria-hidden="true">★</span></label>
+          <label class="star-label" aria-label="2 estrellas"><input type="radio" name="stars" value="2" /><span aria-hidden="true">★</span></label>
+          <label class="star-label" aria-label="3 estrellas"><input type="radio" name="stars" value="3" /><span aria-hidden="true">★</span></label>
+          <label class="star-label" aria-label="4 estrellas"><input type="radio" name="stars" value="4" /><span aria-hidden="true">★</span></label>
+          <label class="star-label" aria-label="5 estrellas"><input type="radio" name="stars" value="5" /><span aria-hidden="true">★</span></label>
+        </div>
+        <span class="field-error" id="resena-stars-err" role="alert" aria-live="polite"></span>
+      </div>
+      <div class="field-group">
+        <label for="resena-comment">Comentario (opcional)</label>
+        <textarea id="resena-comment" rows="3" placeholder="Cuéntanos cómo te fue..." aria-describedby="resena-comment-hint" maxlength="300"></textarea>
+        <span class="field-hint" id="resena-comment-hint">Máximo 300 caracteres</span>
+      </div>
+      <div class="form-msg hidden" id="resena-msg" role="alert" aria-live="assertive"></div>
+      <button type="submit" class="btn-primary btn-full">Enviar reseña</button>
+    </form>
+  </div>
+</div>
+
+<div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+<footer class="footer" role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <span aria-hidden="true">⬡</span> Study<strong>Sync</strong>
+    </div>
+    <p class="footer-copy">© 2026 StudySync. Plataforma académica de tutorías universitarias.</p>
+    <nav class="footer-links" aria-label="Pie de página">
+      <a href="#">Privacidad</a>
+      <a href="#">Términos</a>
+      <a href="#">Soporte</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+'use strict';
+
+/* ========== ESTADO GLOBAL ========== */
+const App = {
+  currentUser: null,
+  tutores: [],
+  solicitudes: [],
+  reviews: {},
+  selectedSlot: null,
+  currentTutor: null,
+  dashboardFilter: 'todas',
+  regAvailability: new Set(),
+  tpAvailability: new Set(),
+};
+
+/* ========== CONFIGURACIÓN DE CALENDARIO ========== */
+const DAYS = ['L','M','X','J','V','S','D'];
+const DAY_NAMES = { L:'Lunes', M:'Martes', X:'Miércoles', J:'Jueves', V:'Viernes', S:'Sábado', D:'Domingo' };
+const HOURS = ['08:00','10:00','12:00','14:00','16:00','18:00','20:00'];
+
+/* ========== DATOS DEMO ========== */
+const DEMO_USERS = [
+  {
+    id: 'u1', nombre: 'Sofía', apellido: 'Ramírez', email: 'estudiante@demo.com',
+    password: 'demo123', carrera: 'Ingeniería Industrial', nivel: '3er Semestre',
+    tipo: 'Estudiante',
+  },
+  {
+    id: 't_demo', nombre: 'Carlos', apellido: 'Mendoza', email: 'tutor@demo.com',
+    password: 'demo123', carrera: 'Matemáticas', nivel: '8vo Semestre',
+    materias: ['Cálculo'], materiaDetalle: 'Cálculo con Dr. Pérez',
+    telefono: '0991234567',
+    precio: 18,
+    rating: 4.8, reviewsCount: 12, color: 0,
+    tipo: 'Tutor',
+    disponibilidad: ['L-08:00','L-10:00','M-14:00','X-16:00','J-10:00','V-08:00'],
+    ocupados: ['L-12:00','M-10:00'],
+  },
+];
+
+const COLORES_AVATAR = [
+  'linear-gradient(135deg,#5465ff,#8b5cf6)',
+  'linear-gradient(135deg,#10b981,#5465ff)',
+  'linear-gradient(135deg,#f59e0b,#ef4444)',
+  'linear-gradient(135deg,#ec4899,#8b5cf6)',
+  'linear-gradient(135deg,#22c55e,#10b981)',
+  'linear-gradient(135deg,#f97316,#f59e0b)',
+];
+
+function randomSlots(count) {
+  const all = [];
+  DAYS.forEach(d => HOURS.forEach(h => all.push(`${d}-${h}`)));
+  const shuffled = all.sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, count);
+}
+
+const TUTORES_SEED = [
+  { id: 't1', nombre: 'María', apellido: 'González', carrera: 'Matemáticas Aplicadas', nivel: '10mo Semestre', materias: ['Cálculo','Álgebra','Estadística'], materiaDetalle: 'Cálculo Diferencial con Dr. Pérez', precio: 20, rating: 4.9, reviewsCount: 38, color: 0, telefono: '0987123456', disponibilidad: ['L-08:00','L-10:00','M-14:00','M-16:00','X-08:00','J-10:00','V-14:00','V-16:00'], ocupados: ['L-12:00','M-10:00','J-16:00'] },
+  { id: 't2', nombre: 'Andrés', apellido: 'Torres', carrera: 'Ingeniería en Sistemas', nivel: '7mo Semestre', materias: ['Programación','Álgebra'], materiaDetalle: 'Programación Orientada a Objetos con Ing. López', precio: 15, rating: 4.7, reviewsCount: 22, color: 1, telefono: '0998765432', disponibilidad: ['L-14:00','L-16:00','X-10:00','X-14:00','V-08:00','V-18:00','S-10:00'], ocupados: ['M-14:00','J-12:00'] },
+  { id: 't3', nombre: 'Laura', apellido: 'Vásquez', carrera: 'Física Teórica', nivel: '9no Semestre', materias: ['Física','Cálculo'], materiaDetalle: 'Física General con Dra. Núñez', precio: 25, rating: 4.8, reviewsCount: 45, color: 2, telefono: '0961234567', disponibilidad: ['M-08:00','M-10:00','J-14:00','J-16:00','V-10:00','S-12:00'], ocupados: ['L-10:00','X-16:00','V-14:00'] },
+  { id: 't4', nombre: 'Sebastián', apellido: 'Morales', carrera: 'Estadística', nivel: '6to Semestre', materias: ['Estadística','Programación','Economía'], materiaDetalle: 'Estadística Inferencial con Dr. Ramírez', precio: 12, rating: 4.5, reviewsCount: 17, color: 3, telefono: '0967891234', disponibilidad: ['L-18:00','X-18:00','J-08:00','J-20:00','V-20:00','S-16:00'], ocupados: ['L-16:00','M-18:00'] },
+  { id: 't5', nombre: 'Valentina', apellido: 'Ríos', carrera: 'Química Industrial', nivel: '10mo Semestre', materias: ['Química','Física'], materiaDetalle: 'Química Orgánica con Dra. Salinas', precio: 22, rating: 4.6, reviewsCount: 29, color: 4, telefono: '0955432198', disponibilidad: ['L-10:00','M-12:00','X-10:00','J-12:00','V-14:00','S-10:00'], ocupados: ['L-14:00','X-12:00','V-16:00'] },
+  { id: 't6', nombre: 'Felipe', apellido: 'Castillo', carrera: 'Economía', nivel: '5to Semestre', materias: ['Economía','Estadística'], materiaDetalle: 'Microeconomía con Dr. Andrade', precio: 14, rating: 3.9, reviewsCount: 11, color: 5, telefono: '0978123654', disponibilidad: ['L-12:00','M-14:00','X-16:00','J-18:00','V-10:00'], ocupados: ['L-16:00','J-14:00'] },
+  { id: 't7', nombre: 'Isabela', apellido: 'Fuentes', carrera: 'Ingeniería Civil', nivel: '9no Semestre', materias: ['Cálculo','Física','Álgebra'], materiaDetalle: 'Cálculo Integral con Ing. Vega', precio: 28, rating: 5.0, reviewsCount: 52, color: 0, telefono: '0989123456', disponibilidad: ['L-08:00','M-10:00','X-14:00','J-16:00','V-18:00','S-14:00'], ocupados: ['L-10:00','X-16:00','V-10:00'] },
+  { id: 't8', nombre: 'Rodrigo', apellido: 'Peña', carrera: 'Ciencias de la Computación', nivel: '8vo Semestre', materias: ['Programación','Estadística'], materiaDetalle: 'Algoritmos con Dr. Arévalo', precio: 30, rating: 4.4, reviewsCount: 9, color: 1, telefono: '0956789012', disponibilidad: ['M-18:00','X-18:00','J-18:00','V-18:00','S-16:00','S-18:00'], ocupados: ['L-18:00','J-16:00'] },
+];
+
+const REVIEW_SEEDS = {
+  t1: [{ user:'Diego A.', stars:5, comment:'Excelente profesora, explica muy claro el cálculo diferencial.' }, { user:'Ana P.', stars:5, comment:'Muy paciente y metodológica.' }],
+  t2: [{ user:'Luis M.', stars:5, comment:'Me ayudó a entender POO desde cero.' }],
+  t3: [{ user:'Karen T.', stars:5, comment:'La mejor tutora de física que he tenido.' }, { user:'Pablo V.', stars:4, comment:'Muy buena, buen manejo del tiempo.' }],
+  t7: [{ user:'Sofía R.', stars:5, comment:'Profesional y muy detallista.' }, { user:'Marcos L.', stars:5, comment:'Aprobé el semestre gracias a ella.' }],
+};
+
+/* ========== INICIALIZACIÓN ========== */
+document.addEventListener('DOMContentLoaded', () => {
+  initData();
+  initNavbar();
+  initHero();
+  initFilters();
+  renderTutores(App.tutores);
+  initAuthModals();
+  initTutorModal();
+  initConfirmModal();
+  initResenaModal();
+  initTutorProfileForm();
+  renderAvailabilityCalendar('reg-availability', App.regAvailability);
+  checkSession();
+});
+
+function initData() {
+  App.tutores = TUTORES_SEED.map(t => ({ ...t, tipo: 'Tutor' }));
+  App.reviews = JSON.parse(JSON.stringify(REVIEW_SEEDS));
+  App.tutores.forEach(t => {
+    const saved = App.reviews[t.id];
+    if (saved && saved.length > 0) {
+      const avg = saved.reduce((s, r) => s + r.stars, 0) / saved.length;
+      t.rating = Math.round(avg * 10) / 10;
+      t.reviewsCount = saved.length;
+    }
+  });
+  const saved = sessionStorage.getItem('ss_solicitudes');
+  if (saved) {
+    try { App.solicitudes = JSON.parse(saved); } catch(e) { App.solicitudes = []; }
+  }
+}
+
+function checkSession() {
+  const saved = sessionStorage.getItem('ss_user');
+  if (saved) {
+    try {
+      App.currentUser = JSON.parse(saved);
+      updateNavForUser();
+    } catch(e) { sessionStorage.removeItem('ss_user'); }
+  }
+}
+
+/* ========== NAVBAR ========== */
+function initNavbar() {
+  $('#btn-open-login').addEventListener('click', () => openModal('modal-login'));
+  $('#btn-open-register').addEventListener('click', () => openModal('modal-register'));
+  $('#btn-logout').addEventListener('click', logout);
+  $('#btn-dashboard').addEventListener('click', openDashboard);
+}
+
+function updateNavForUser() {
+  const u = App.currentUser;
+  if (!u) return;
+  $('#nav-auth').classList.add('hidden');
+  $('#nav-user').classList.remove('hidden');
+  $('#user-greeting').textContent = `Hola, ${u.nombre} (${u.tipo})`;
+}
+
+function logout() {
+  App.currentUser = null;
+  sessionStorage.removeItem('ss_user');
+  $('#nav-auth').classList.remove('hidden');
+  $('#nav-user').classList.add('hidden');
+  $('#dashboard-section').classList.add('hidden');
+  $('#tutor-edit-section').classList.add('hidden');
+  showToast('Sesión cerrada. ¡Hasta pronto!', 'info');
+  renderTutores(App.tutores);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ========== HERO ========== */
+function initHero() {
+  $('#hero-search-btn').addEventListener('click', heroSearch);
+  $('#hero-search').addEventListener('keydown', e => { if (e.key === 'Enter') heroSearch(); });
+  $('#hero-search').addEventListener('input', () => applyFilters());
+  $$('.tag-pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const val = btn.dataset.filter;
+      $('#filter-materia').value = val;
+      $('#hero-search').value = '';
+      applyFilters();
+      document.getElementById('tutores').scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+}
+
+function heroSearch() {
+  const val = $('#hero-search').value.trim();
+  if (val) {
+    $('#filter-materia').value = '';
+  }
+  applyFilters();
+  document.getElementById('tutores').scrollIntoView({ behavior: 'smooth' });
+}
+
+/* ========== FILTROS ========== */
+/* Quita tildes y pasa a minúsculas para búsquedas tolerantes */
+function normalize(s) {
+  return String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+}
+
+function initFilters() {
+  $('#filter-materia').addEventListener('input', () => applyFilters());
+  $('#filter-nivel').addEventListener('change', () => applyFilters());
+  $('#filter-price').addEventListener('input', () => {
+    const v = $('#filter-price').value;
+    $('#price-display').textContent = `$${v}/h`;
+    $('#filter-price').setAttribute('aria-valuenow', v);
+    applyFilters();
+  });
+  $$('input[name="rating"]').forEach(r => r.addEventListener('change', () => applyFilters()));
+  $('#clear-filters').addEventListener('click', clearFilters);
+}
+
+function applyFilters() {
+  const materiaRaw = $('#filter-materia').value.trim();
+  const materiaN = normalize(materiaRaw);
+  const nivelF = $('#filter-nivel').value;
+  const maxPrice = parseInt($('#filter-price').value);
+  const minRating = parseFloat($('input[name="rating"]:checked').value);
+  const queryRaw = $('#hero-search').value.trim();
+  const queryN = normalize(queryRaw);
+
+  const filtered = App.tutores.filter(t => {
+    if (materiaN) {
+      const materiasN = (t.materias || []).map(normalize);
+      const detalleN = normalize(t.materiaDetalle || '');
+      const hit = materiasN.some(m => m.includes(materiaN)) || detalleN.includes(materiaN);
+      if (!hit) return false;
+    }
+    if (nivelF && t.nivel !== nivelF) return false;
+    if (t.precio > maxPrice) return false;
+    if (t.rating < minRating) return false;
+    if (queryN) {
+      const hay = normalize(`${t.nombre} ${t.apellido} ${t.carrera} ${(t.materias||[]).join(' ')} ${t.materiaDetalle||''}`);
+      if (!hay.includes(queryN)) return false;
+    }
+    return true;
+  });
+
+  renderTutores(filtered);
+  const count = filtered.length;
+  const materiaMsg = materiaRaw ? materiaRaw : (queryRaw ? `"${queryRaw}"` : 'tu búsqueda');
+  if (count === 0) {
+    $('#results-count').textContent = `No se encontraron mentores para ${materiaMsg}`;
+  } else if (materiaRaw || queryRaw) {
+    // Mensaje exacto del PDF: "Se encontraron # número de mentores disponibles para (materia buscada)"
+    $('#results-count').textContent = `Se encontraron ${count} mentor${count !== 1 ? 'es' : ''} disponible${count !== 1 ? 's' : ''} para ${materiaMsg}`;
+  } else {
+    $('#results-count').textContent = `Mostrando ${count} tutor${count !== 1 ? 'es' : ''}`;
+  }
+}
+
+function clearFilters() {
+  $('#filter-materia').value = '';
+  $('#filter-nivel').value = '';
+  $('#filter-price').value = 50;
+  $('#price-display').textContent = '$50/h';
+  $('input[name="rating"][value="0"]').checked = true;
+  $('#hero-search').value = '';
+  applyFilters();
+}
+
+/* ========== RENDER TUTORES ========== */
+function renderTutores(list) {
+  const grid = $('#tutores-grid');
+  if (list.length === 0) {
+    grid.innerHTML = `<div class="no-results"><span class="no-results-icon" aria-hidden="true">🔍</span><p>No se encontraron tutores con esos filtros.</p><p style="margin-top:6px;font-size:0.85rem">Intenta ajustar los criterios o limpiar los filtros.</p></div>`;
+    return;
+  }
+  grid.innerHTML = list.map(t => tutorCard(t)).join('');
+  $$('.tutor-card').forEach(card => {
+    const id = card.dataset.id;
+    card.addEventListener('click', () => openTutorModal(id));
+    card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openTutorModal(id); } });
+  });
+}
+
+function tutorCard(t) {
+  const initials = `${t.nombre[0]}${t.apellido[0]}`;
+  const stars = renderStarsDisplay(t.rating);
+  const reviews = App.reviews[t.id] || [];
+  const reviewCount = reviews.length > 0 ? reviews.length : t.reviewsCount;
+  return `
+    <article class="tutor-card" data-id="${t.id}" role="listitem"
+      tabindex="0" aria-label="Tutor ${t.nombre} ${t.apellido}, ${t.carrera}, $${t.precio} por hora, calificación ${t.rating}">
+      <div class="tutor-card-header">
+        <div class="tutor-avatar" style="background:${COLORES_AVATAR[t.color]}" aria-hidden="true">${initials}</div>
+        <div class="tutor-info">
+          <div class="tutor-name">${t.nombre} ${t.apellido}</div>
+          <div class="tutor-carrera">${t.carrera}</div>
+        </div>
+        <div class="tutor-rating" aria-label="Calificación ${t.rating} de 5 estrellas, ${reviewCount} reseñas">
+          ${stars} <span>(${reviewCount})</span>
+        </div>
+      </div>
+      <div class="tutor-materias" aria-label="Materias: ${t.materias.join(', ')}">
+        ${t.materias.map(m => `<span class="materia-chip">${m}</span>`).join('')}
+      </div>
+      <div class="tutor-card-footer">
+        <div class="tutor-price" aria-label="Precio ${t.precio} dólares por hora">$${t.precio}<span>/h</span></div>
+        <span class="tutor-nivel">${t.nivel}</span>
+      </div>
+    </article>`;
+}
+
+function renderStarsDisplay(rating) {
+  let out = '';
+  for (let i = 1; i <= 5; i++) {
+    if (rating >= i) out += '<span aria-hidden="true" style="color:#f59e0b">★</span>';
+    else if (rating >= i - 0.5) out += '<span aria-hidden="true" style="color:#f59e0b;opacity:0.5">★</span>';
+    else out += '<span aria-hidden="true" style="color:#d1d5db">★</span>';
+  }
+  return out;
+}
+
+/* ========== CALENDARIO DE DISPONIBILIDAD (registro/edición tutor) ========== */
+function renderAvailabilityCalendar(containerId, selectedSet) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  let html = `
+    <div class="schedule-wrap">
+      <div class="schedule-legend" aria-hidden="true">
+        <div class="schedule-legend-item"><div class="schedule-legend-dot" style="background:var(--surface);border:1px dashed var(--border-strong)"></div> Sin marcar</div>
+        <div class="schedule-legend-item"><div class="schedule-legend-dot" style="background:linear-gradient(135deg,var(--accent-a),var(--accent-b));border-color:var(--accent-a)"></div> Disponible</div>
+      </div>
+      <div class="schedule-grid" role="grid" aria-label="Calendario de disponibilidad semanal">
+        <div class="schedule-corner" aria-hidden="true">Hora</div>
+  `;
+  DAYS.forEach(d => {
+    html += `<div class="schedule-day-header" role="columnheader">${d}</div>`;
+  });
+  HOURS.forEach(h => {
+    html += `<div class="schedule-hour" aria-hidden="true">${h}</div>`;
+    DAYS.forEach(d => {
+      const slotId = `${d}-${h}`;
+      const isSelected = selectedSet.has(slotId);
+      html += `<button type="button" class="schedule-slot ${isSelected ? 'selected' : 'editable'}" data-slot="${slotId}" aria-label="${DAY_NAMES[d]} a las ${h}${isSelected ? ', seleccionado' : ', no seleccionado'}" aria-pressed="${isSelected}"></button>`;
+    });
+  });
+  html += '</div></div>';
+  container.innerHTML = html;
+
+  container.querySelectorAll('.schedule-slot[data-slot]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const slot = btn.dataset.slot;
+      if (selectedSet.has(slot)) {
+        selectedSet.delete(slot);
+        btn.classList.remove('selected');
+        btn.classList.add('editable');
+        btn.setAttribute('aria-pressed', 'false');
+        btn.setAttribute('aria-label', btn.getAttribute('aria-label').replace(', seleccionado', ', no seleccionado'));
+      } else {
+        selectedSet.add(slot);
+        btn.classList.remove('editable');
+        btn.classList.add('selected');
+        btn.setAttribute('aria-pressed', 'true');
+        btn.setAttribute('aria-label', btn.getAttribute('aria-label').replace(', no seleccionado', ', seleccionado'));
+      }
+      if (selectedSet.size > 0) {
+        const errId = containerId === 'reg-availability' ? 'reg-avail-err' : 'tp-avail-err';
+        setMsg(errId, '');
+      }
+    });
+  });
+}
+
+/* ========== AUTH MODALS ========== */
+function initAuthModals() {
+  $('#close-login').addEventListener('click', () => closeModal('modal-login'));
+  $('#modal-login').addEventListener('click', e => { if (e.target === $('#modal-login')) closeModal('modal-login'); });
+  $('#switch-to-register').addEventListener('click', () => { closeModal('modal-login'); openModal('modal-register'); });
+  $('#form-login').addEventListener('submit', handleLogin);
+
+  $('#close-register').addEventListener('click', () => closeModal('modal-register'));
+  $('#modal-register').addEventListener('click', e => { if (e.target === $('#modal-register')) closeModal('modal-register'); });
+  $('#switch-to-login').addEventListener('click', () => { closeModal('modal-register'); openModal('modal-login'); });
+  $('#form-register').addEventListener('submit', handleRegister);
+
+  $$('input[name="tipo-usuario"]').forEach(r => {
+    r.addEventListener('change', () => {
+      if (r.value === 'Tutor') {
+        $('#tutor-extra-fields').classList.remove('hidden');
+      } else {
+        $('#tutor-extra-fields').classList.add('hidden');
+      }
+    });
+  });
+
+  $$('.demo-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      $('#login-email').value = btn.dataset.email;
+      $('#login-password').value = btn.dataset.pw;
+      $('#login-email').classList.remove('invalid');
+      $('#login-password').classList.remove('invalid');
+    });
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      ['modal-login','modal-register','modal-tutor','modal-resena','modal-confirm'].forEach(id => {
+        if (!$('#'+id).classList.contains('hidden')) closeModal(id);
+      });
+    }
+  });
+
+  $$('.toggle-pw').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const inp = document.getElementById(btn.dataset.target);
+      const showing = inp.type === 'text';
+      inp.type = showing ? 'password' : 'text';
+      btn.setAttribute('aria-label', showing ? 'Mostrar contraseña' : 'Ocultar contraseña');
+      btn.textContent = showing ? '👁' : '🙈';
+    });
+  });
+
+  // Live validation on blur
+  setupLiveValidation('login-email', validateEmail);
+  setupLiveValidation('login-password', v => v.length >= 1 ? null : 'Ingresa tu contraseña');
+  setupLiveValidation('reg-nombre', validateNombre);
+  setupLiveValidation('reg-apellido', validateApellido);
+  setupLiveValidation('reg-email', validateEmail);
+  setupLiveValidation('reg-password', validatePassword);
+  setupLiveValidation('reg-carrera', v => v.trim() ? null : 'La carrera es obligatoria');
+  setupLiveValidation('reg-telefono', validateTelefono);
+  setupLiveValidation('reg-precio', validatePrecio);
+  setupLiveValidation('reg-materias', v => v.trim() ? null : 'Ingresa la materia y el profesor');
+}
+
+function setupLiveValidation(inputId, validator) {
+  const inp = document.getElementById(inputId);
+  if (!inp) return;
+  inp.addEventListener('blur', () => {
+    if (!inp.value && !inp.required) return;
+    const err = validator(inp.value);
+    const errEl = document.getElementById(inputId + '-err');
+    setFieldState(inp, err, errEl);
+  });
+  inp.addEventListener('input', () => {
+    if (inp.classList.contains('invalid')) {
+      const err = validator(inp.value);
+      const errEl = document.getElementById(inputId + '-err');
+      if (!err) setFieldState(inp, null, errEl);
+    }
+  });
+}
+
+function handleLogin(e) {
+  e.preventDefault();
+  clearMsg('login-msg');
+  const email = $('#login-email').value.trim();
+  const pw = $('#login-password').value;
+  let valid = true;
+
+  const emailErr = validateEmail(email);
+  if (emailErr) { setFieldState($('#login-email'), emailErr, $('#login-email-err')); valid = false; }
+  else setFieldState($('#login-email'), null, $('#login-email-err'));
+
+  if (!pw) { setFieldState($('#login-password'), 'Ingresa tu contraseña', $('#login-password-err')); valid = false; }
+  else setFieldState($('#login-password'), null, $('#login-password-err'));
+
+  if (!valid) return;
+
+  const allUsers = [...DEMO_USERS, ...getRegisteredUsers()];
+  const user = allUsers.find(u => u.email === email && u.password === pw);
+  if (!user) {
+    showFormMsg('login-msg', 'Correo o contraseña incorrectos. Intenta de nuevo.', 'error');
+    return;
+  }
+
+  // Si el usuario es tutor demo, sincronizar con tutores (por si ya lo actualizaron antes)
+  if (user.tipo === 'Tutor') {
+    const existingTutor = App.tutores.find(t => t.id === user.id);
+    if (!existingTutor) {
+      App.tutores.push({
+        id: user.id,
+        nombre: user.nombre,
+        apellido: user.apellido,
+        carrera: user.carrera,
+        nivel: user.nivel,
+        materias: user.materias || ['Cálculo'],
+        materiaDetalle: user.materiaDetalle || '',
+        precio: user.precio || 15,
+        rating: user.rating || 0,
+        reviewsCount: user.reviewsCount || 0,
+        color: user.color !== undefined ? user.color : Math.floor(Math.random() * COLORES_AVATAR.length),
+        telefono: user.telefono,
+        disponibilidad: user.disponibilidad || [],
+        ocupados: user.ocupados || [],
+        tipo: 'Tutor',
+      });
+      renderTutores(App.tutores);
+    }
+  }
+
+  App.currentUser = user;
+  sessionStorage.setItem('ss_user', JSON.stringify(user));
+  updateNavForUser();
+  closeModal('modal-login');
+  showToast(`¡Bienvenido, ${user.nombre}! 👋`, 'success');
+}
+
+function handleRegister(e) {
+  e.preventDefault();
+  clearMsg('register-msg');
+  let valid = true;
+
+  const tipo = $('input[name="tipo-usuario"]:checked');
+  if (!tipo) {
+    setMsg('reg-tipo-err', 'Selecciona tu tipo de usuario');
+    valid = false;
+  } else setMsg('reg-tipo-err', '');
+
+  const fields = [
+    { id: 'reg-nombre', validator: validateNombre },
+    { id: 'reg-apellido', validator: validateApellido },
+    { id: 'reg-email', validator: validateEmail },
+    { id: 'reg-password', validator: validatePassword },
+    { id: 'reg-carrera', validator: v => v.trim() ? null : 'La carrera es obligatoria' },
+    { id: 'reg-nivel', validator: v => v ? null : 'Selecciona un semestre' },
+  ];
+
+  fields.forEach(({ id, validator }) => {
+    const inp = document.getElementById(id);
+    const err = validator(inp.value);
+    const errEl = document.getElementById(id + '-err');
+    setFieldState(inp, err, errEl);
+    if (err) valid = false;
+  });
+
+  let materiaDetalle = '';
+  let materiasArr = [];
+  let telefono = '';
+  let precio = 0;
+  let disponibilidadArr = [];
+
+  if (tipo && tipo.value === 'Tutor') {
+    const matVal = $('#reg-materias').value.trim();
+    if (!matVal) {
+      setFieldState($('#reg-materias'), 'Ingresa la materia y el profesor', $('#reg-materias-err'));
+      valid = false;
+    } else {
+      setFieldState($('#reg-materias'), null, $('#reg-materias-err'));
+      materiaDetalle = matVal;
+      materiasArr = [detectMainSubject(matVal)];
+    }
+
+    const telErr = validateTelefono($('#reg-telefono').value);
+    if (telErr) {
+      setFieldState($('#reg-telefono'), telErr, $('#reg-telefono-err'));
+      valid = false;
+    } else {
+      setFieldState($('#reg-telefono'), null, $('#reg-telefono-err'));
+      telefono = $('#reg-telefono').value.trim();
+    }
+
+    const precioErr = validatePrecio($('#reg-precio').value);
+    if (precioErr) {
+      setFieldState($('#reg-precio'), precioErr, $('#reg-precio-err'));
+      valid = false;
+    } else {
+      setFieldState($('#reg-precio'), null, $('#reg-precio-err'));
+      precio = parseInt($('#reg-precio').value);
+    }
+
+    if (App.regAvailability.size === 0) {
+      setMsg('reg-avail-err', 'Selecciona al menos un horario disponible en el calendario');
+      valid = false;
+    } else {
+      setMsg('reg-avail-err', '');
+      disponibilidadArr = Array.from(App.regAvailability);
+    }
+  }
+
+  if (!valid) {
+    showFormMsg('register-msg', 'Por favor completa todos los campos requeridos correctamente.', 'error');
+    return;
+  }
+
+  const allUsers = [...DEMO_USERS, ...getRegisteredUsers()];
+  if (allUsers.find(u => u.email === $('#reg-email').value.trim())) {
+    setFieldState($('#reg-email'), 'Este correo ya está registrado', $('#reg-email-err'));
+    showFormMsg('register-msg', 'Por favor completa todos los campos requeridos correctamente.', 'error');
+    return;
+  }
+
+  const colorIdx = Math.floor(Math.random() * COLORES_AVATAR.length);
+  const newUser = {
+    id: 'u_' + Date.now(),
+    nombre: $('#reg-nombre').value.trim(),
+    apellido: $('#reg-apellido').value.trim(),
+    email: $('#reg-email').value.trim(),
+    password: $('#reg-password').value,
+    carrera: $('#reg-carrera').value.trim(),
+    nivel: $('#reg-nivel').value,
+    tipo: tipo.value,
+  };
+
+  if (tipo.value === 'Tutor') {
+    Object.assign(newUser, {
+      materiaDetalle,
+      materias: materiasArr,
+      telefono,
+      precio,
+      disponibilidad: disponibilidadArr,
+      ocupados: [],
+      rating: 0,
+      reviewsCount: 0,
+      color: colorIdx,
+    });
+    // Agregar al listado público de tutores
+    App.tutores.push({
+      id: newUser.id,
+      nombre: newUser.nombre,
+      apellido: newUser.apellido,
+      carrera: newUser.carrera,
+      nivel: newUser.nivel,
+      materias: materiasArr,
+      materiaDetalle,
+      precio,
+      rating: 0,
+      reviewsCount: 0,
+      color: colorIdx,
+      telefono,
+      disponibilidad: disponibilidadArr,
+      ocupados: [],
+      tipo: 'Tutor',
+    });
+    renderTutores(App.tutores);
+  }
+
+  const registered = getRegisteredUsers();
+  registered.push(newUser);
+  sessionStorage.setItem('ss_registered', JSON.stringify(registered));
+
+  App.currentUser = newUser;
+  sessionStorage.setItem('ss_user', JSON.stringify(newUser));
+  updateNavForUser();
+  closeModal('modal-register');
+  showToast(`¡Cuenta creada! Bienvenido, ${newUser.nombre} 🎉`, 'success');
+  // Reset form y state
+  $('#form-register').reset();
+  App.regAvailability.clear();
+  renderAvailabilityCalendar('reg-availability', App.regAvailability);
+  $('#tutor-extra-fields').classList.add('hidden');
+}
+
+function detectMainSubject(text) {
+  const map = ['Cálculo','Álgebra','Programación','Estadística','Física','Química','Economía'];
+  const lower = text.toLowerCase();
+  for (const s of map) {
+    if (lower.includes(s.toLowerCase())) return s;
+  }
+  return 'Otro';
+}
+
+function getRegisteredUsers() {
+  const s = sessionStorage.getItem('ss_registered');
+  try { return s ? JSON.parse(s) : []; } catch(e) { return []; }
+}
+
+/* ========== TUTOR MODAL ========== */
+function initTutorModal() {
+  $('#close-tutor').addEventListener('click', () => closeModal('modal-tutor'));
+  $('#modal-tutor').addEventListener('click', e => { if (e.target === $('#modal-tutor')) closeModal('modal-tutor'); });
+}
+
+function openTutorModal(id) {
+  const tutor = App.tutores.find(t => t.id === id);
+  if (!tutor) return;
+  App.currentTutor = tutor;
+  App.selectedSlot = null;
+  renderTutorProfile(tutor);
+  openModal('modal-tutor');
+}
+window.openTutorModal = openTutorModal; // accesible desde inline handlers en sugerencias
+
+function renderTutorProfile(t) {
+  const initials = `${t.nombre[0]}${t.apellido[0]}`;
+  const reviews = App.reviews[t.id] || [];
+  const avgRating = reviews.length > 0 ? (reviews.reduce((s,r)=>s+r.stars,0)/reviews.length).toFixed(1) : t.rating.toFixed(1);
+  const reviewCount = reviews.length > 0 ? reviews.length : t.reviewsCount;
+  const stars = renderStarsDisplay(parseFloat(avgRating));
+
+  const isLoggedIn = !!App.currentUser;
+  const isStudent = isLoggedIn && App.currentUser.tipo === 'Estudiante';
+  const isOwner = isLoggedIn && App.currentUser.id === t.id;
+
+  // Verificar solicitud pendiente
+  const yaEnviada = isLoggedIn ? App.solicitudes.find(s => s.tutorId === t.id && s.estudianteId === App.currentUser.id && s.status === 'pending') : null;
+
+  const calHtml = renderPublicCalendar(t);
+  const reviewsHtml = reviews.length > 0
+    ? `<div class="review-list">${reviews.map(r => `
+        <div class="review-item">
+          <div class="review-header">
+            <div class="review-avatar" aria-hidden="true">${r.user.split(' ').map(w=>w[0]).join('')}</div>
+            <div class="review-name">${r.user}</div>
+            <div class="review-stars" aria-label="${r.stars} estrellas">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
+          </div>
+          ${r.comment ? `<div class="review-comment">"${r.comment}"</div>` : ''}
+        </div>`).join('')}</div>`
+    : `<p style="color:var(--text-muted);font-size:0.88rem">Aún no hay reseñas. ¡Sé el primero!</p>`;
+
+  let bookingSection;
+  if (isOwner) {
+    bookingSection = `<div class="login-prompt"><strong>Este es tu perfil público</strong><p>Así es como los estudiantes te ven.</p></div>`;
+  } else if (!isLoggedIn) {
+    bookingSection = `<div class="login-prompt">
+         <p><strong>Inicia sesión</strong> para reservar una sesión con este tutor.</p>
+         <button class="btn-primary btn-full" id="modal-login-prompt-btn">Iniciar sesión</button>
+       </div>`;
+  } else if (!isStudent) {
+    bookingSection = `<div class="login-prompt"><p>Solo los estudiantes pueden enviar solicitudes de tutoría.</p></div>`;
+  } else if (yaEnviada) {
+    bookingSection = `<div class="form-msg info" style="display:flex"><span aria-hidden="true">⏳</span> Ya tienes una solicitud pendiente con este tutor.</div>`;
+  } else {
+    bookingSection = `<button class="btn-solicitar" id="btn-enviar-solicitud" disabled aria-label="Enviar solicitud a ${t.nombre}">Selecciona un horario</button>
+           <p style="font-size:0.78rem;color:var(--text-muted);text-align:center;margin-top:8px">Toca un horario disponible del calendario</p>`;
+  }
+
+  $('#tutor-modal-content').innerHTML = `
+    <div class="tutor-profile-modal">
+      <div class="tutor-profile-sidebar">
+        <div>
+          <div class="profile-avatar-lg" style="background:${COLORES_AVATAR[t.color]}" aria-hidden="true">${initials}</div>
+          <div class="profile-name-lg" id="tutor-modal-name">${t.nombre} ${t.apellido}</div>
+          <div class="profile-carrera-lg">${t.carrera}</div>
+        </div>
+        <div>
+          <div class="profile-stat">
+            <span class="profile-stat-icon" aria-hidden="true">⭐</span>
+            <span aria-label="Calificación ${avgRating}">${stars} ${avgRating} (${reviewCount} reseñas)</span>
+          </div>
+          <div class="profile-stat">
+            <span class="profile-stat-icon" aria-hidden="true">🎓</span>
+            <span>${t.nivel}</span>
+          </div>
+          <div class="profile-stat">
+            <span class="profile-stat-icon" aria-hidden="true">📚</span>
+            <span>${t.materiaDetalle || t.materias.join(' · ')}</span>
+          </div>
+        </div>
+        <div>
+          <div class="profile-price-lg" aria-label="Precio ${t.precio} dólares por hora">$${t.precio}<span>/hora</span></div>
+        </div>
+        <div id="booking-section">${bookingSection}</div>
+      </div>
+      <div class="tutor-profile-main">
+        <div>
+          <p class="profile-section-title">Disponibilidad semanal</p>
+          ${calHtml}
+        </div>
+        <div>
+          <p class="profile-section-title">Reseñas (${reviewCount})</p>
+          ${reviewsHtml}
+        </div>
+      </div>
+    </div>`;
+
+  const btnSolicitar = document.getElementById('btn-enviar-solicitud');
+  if (btnSolicitar) {
+    btnSolicitar.addEventListener('click', () => openConfirmModal(t));
+  }
+  const btnLoginPrompt = document.getElementById('modal-login-prompt-btn');
+  if (btnLoginPrompt) {
+    btnLoginPrompt.addEventListener('click', () => { closeModal('modal-tutor'); openModal('modal-login'); });
+  }
+
+  $$('.schedule-slot.available').forEach(slot => {
+    slot.addEventListener('click', () => selectSlot(slot, t));
+    slot.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectSlot(slot, t); } });
+  });
+}
+
+function renderPublicCalendar(t) {
+  let html = `
+    <div class="schedule-wrap">
+      <div class="schedule-legend" aria-hidden="true">
+        <div class="schedule-legend-item"><div class="schedule-legend-dot" style="background:#ecfdf5;border-color:#a7f3d0"></div> Disponible</div>
+        <div class="schedule-legend-item"><div class="schedule-legend-dot" style="background:#fef2f2;border-color:#fecaca"></div> Ocupado</div>
+        <div class="schedule-legend-item"><div class="schedule-legend-dot" style="background:linear-gradient(135deg,var(--accent-a),var(--accent-b));border-color:var(--accent-a)"></div> Seleccionado</div>
+      </div>
+      <div class="schedule-grid" role="grid" aria-label="Disponibilidad semanal del tutor">
+        <div class="schedule-corner" aria-hidden="true">Hora</div>
+  `;
+  DAYS.forEach(d => html += `<div class="schedule-day-header" role="columnheader">${d}</div>`);
+  HOURS.forEach(h => {
+    html += `<div class="schedule-hour" aria-hidden="true">${h}</div>`;
+    DAYS.forEach(d => {
+      const slotId = `${d}-${h}`;
+      const isOccupied = (t.ocupados || []).includes(slotId);
+      const isAvailable = (t.disponibilidad || []).includes(slotId);
+      if (isOccupied) {
+        html += `<div class="schedule-slot occupied" role="gridcell" aria-label="${DAY_NAMES[d]} a las ${h}, ocupado" aria-disabled="true"></div>`;
+      } else if (isAvailable) {
+        html += `<button type="button" class="schedule-slot available" data-slot="${slotId}" data-time="${DAY_NAMES[d]} a las ${h}" role="gridcell" aria-label="${DAY_NAMES[d]} a las ${h}, disponible, presiona para seleccionar"></button>`;
+      } else {
+        html += `<div class="schedule-slot empty" role="gridcell" aria-label="${DAY_NAMES[d]} a las ${h}, no disponible" aria-disabled="true"></div>`;
+      }
+    });
+  });
+  html += '</div></div>';
+  return html;
+}
+
+function selectSlot(slot, t) {
+  $$('.schedule-slot.selected').forEach(s => { s.classList.remove('selected'); s.classList.add('available'); s.setAttribute('aria-pressed', 'false'); });
+  slot.classList.remove('available');
+  slot.classList.add('selected');
+  slot.setAttribute('aria-pressed', 'true');
+  App.selectedSlot = slot.dataset.time;
+
+  const btn = document.getElementById('btn-enviar-solicitud');
+  if (btn) {
+    btn.textContent = `Solicitar ${App.selectedSlot} →`;
+    btn.disabled = false;
+    btn.setAttribute('aria-label', `Enviar solicitud para ${App.selectedSlot}`);
+  }
+}
+
+/* ========== MODAL CONFIRMAR SOLICITUD ========== */
+function initConfirmModal() {
+  $('#close-confirm').addEventListener('click', () => closeModal('modal-confirm'));
+  $('#cancel-confirm').addEventListener('click', () => closeModal('modal-confirm'));
+  $('#modal-confirm').addEventListener('click', e => { if (e.target === $('#modal-confirm')) closeModal('modal-confirm'); });
+  $('#submit-confirm').addEventListener('click', confirmEnviarSolicitud);
+}
+
+function openConfirmModal(tutor) {
+  if (!App.currentUser) { openModal('modal-login'); return; }
+  if (!App.selectedSlot) return;
+
+  $('#confirm-summary').innerHTML = `
+    <div class="summary-box">
+      <p class="summary-title">Resumen de tu solicitud</p>
+      <div class="summary-row">
+        <span class="summary-label">Tutor</span>
+        <span class="summary-value">${tutor.nombre} ${tutor.apellido}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Materia</span>
+        <span class="summary-value">${tutor.materiaDetalle || tutor.materias.join(', ')}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Horario</span>
+        <span class="summary-value">${App.selectedSlot}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Precio/hora</span>
+        <span class="summary-value" style="color:var(--accent-c)">$${tutor.precio}</span>
+      </div>
+    </div>`;
+  $('#confirm-note').value = '';
+  openModal('modal-confirm');
+}
+
+function confirmEnviarSolicitud() {
+  const tutor = App.currentTutor;
+  if (!tutor || !App.selectedSlot || !App.currentUser) return;
+
+  const note = $('#confirm-note').value.trim();
+
+  const sol = {
+    id: 'sol_' + Date.now(),
+    tutorId: tutor.id,
+    tutorNombre: `${tutor.nombre} ${tutor.apellido}`,
+    tutorColor: tutor.color,
+    tutorTelefono: tutor.telefono,
+    estudianteId: App.currentUser.id,
+    estudianteNombre: `${App.currentUser.nombre} ${App.currentUser.apellido}`,
+    materia: tutor.materiaDetalle || tutor.materias[0],
+    materiaTag: tutor.materias[0],
+    horario: App.selectedSlot,
+    nota: note,
+    status: 'pending',
+    createdAt: Date.now(),
+    expiresAt: Date.now() + (48 * 60 * 60 * 1000), // 48h según PDF
+  };
+
+  App.solicitudes.push(sol);
+  saveSolicitudes();
+  closeModal('modal-confirm');
+  closeModal('modal-tutor');
+  // Mensaje exacto del PDF:
+  showToast(`Tu solicitud ha sido enviada a ${tutor.nombre}. El tutor te responderá en un plazo de 24 a 48 horas.`, 'success');
+
+  // Ir al panel
+  setTimeout(() => openDashboard(), 600);
+}
+
+function saveSolicitudes() {
+  sessionStorage.setItem('ss_solicitudes', JSON.stringify(App.solicitudes));
+}
+
+/* ========== DASHBOARD ========== */
+function openDashboard() {
+  if (!App.currentUser) { openModal('modal-login'); return; }
+  $('#tutor-edit-section').classList.add('hidden');
+  const s = $('#dashboard-section');
+  s.classList.remove('hidden');
+  renderDashboard();
+  s.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function renderDashboard() {
+  const isTutor = App.currentUser && App.currentUser.tipo === 'Tutor';
+  const content = $('#dashboard-content');
+  const tabsEl = $('#dashboard-tabs');
+
+  if (isTutor) {
+    $('#dashboard-title').textContent = 'Panel del tutor';
+    $('#dashboard-sub').textContent = 'Revisa y responde las solicitudes de tus estudiantes';
+
+    // Tabs para tutor
+    tabsEl.classList.remove('hidden');
+    tabsEl.innerHTML = `
+      <button class="dashboard-tab ${App.dashboardFilter === 'todas' ? 'active' : ''}" data-filter="todas" role="tab">Solicitudes</button>
+      <button class="dashboard-tab ${App.dashboardFilter === 'perfil' ? 'active' : ''}" data-filter="perfil" role="tab">Mi perfil</button>
+    `;
+    tabsEl.querySelectorAll('.dashboard-tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        App.dashboardFilter = btn.dataset.filter;
+        if (App.dashboardFilter === 'perfil') {
+          $('#dashboard-section').classList.add('hidden');
+          openTutorProfileEdit();
+        } else {
+          renderDashboard();
+        }
+      });
+    });
+
+    // Mensaje exacto del PDF para tutor: "Tienes una solicitud de tutoría pendiente de (Nombre del alumno)"
+    const pendientes = App.solicitudes.filter(s => s.tutorId === App.currentUser.id && s.status === 'pending');
+    const historial = App.solicitudes.filter(s => s.tutorId === App.currentUser.id && s.status !== 'pending');
+
+    let html = '';
+    if (pendientes.length === 0 && historial.length === 0) {
+      html = `<p style="color:var(--text-muted);text-align:center;padding:40px 0">Aún no tienes solicitudes de estudiantes.</p>`;
+    } else {
+      if (pendientes.length > 0) {
+        html += `<h3 style="font-family:var(--font-display);font-weight:700;font-size:1.1rem;color:var(--text-primary);margin-bottom:16px;padding:0 4px">Pendientes (${pendientes.length})</h3>`;
+        html += `<div class="solicitudes-list">${pendientes.map(solicitudTutorCard).join('')}</div>`;
+      }
+      if (historial.length > 0) {
+        html += `<h3 style="font-family:var(--font-display);font-weight:700;font-size:1.1rem;color:var(--text-primary);margin:28px 0 16px;padding:0 4px">Historial</h3>`;
+        html += `<div class="solicitudes-list">${historial.map(solicitudTutorCard).join('')}</div>`;
+      }
+    }
+    content.innerHTML = html;
+
+    // Bind accept/reject
+    content.querySelectorAll('.btn-tutor-accept').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const sol = App.solicitudes.find(s => s.id === btn.dataset.id);
+        if (sol) {
+          sol.status = 'accepted';
+          sol.respondedAt = Date.now();
+          saveSolicitudes();
+          renderDashboard();
+          showToast(`Aceptaste la solicitud de ${sol.estudianteNombre}. Tu contacto ya es visible para ${sol.estudianteNombre.split(' ')[0]}.`, 'success');
+        }
+      });
+    });
+    content.querySelectorAll('.btn-tutor-reject').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const sol = App.solicitudes.find(s => s.id === btn.dataset.id);
+        if (sol) {
+          sol.status = 'rejected';
+          sol.respondedAt = Date.now();
+          saveSolicitudes();
+          renderDashboard();
+          showToast(`Solicitud de ${sol.estudianteNombre} rechazada.`, 'info');
+        }
+      });
+    });
+
+  } else {
+    // ESTUDIANTE
+    $('#dashboard-title').textContent = 'Mis solicitudes';
+    $('#dashboard-sub').textContent = 'Sigue el estado de tus solicitudes enviadas';
+    tabsEl.classList.add('hidden');
+
+    const userSols = App.solicitudes.filter(s => s.estudianteId === App.currentUser.id)
+      .sort((a,b) => b.createdAt - a.createdAt);
+
+    if (userSols.length === 0) {
+      content.innerHTML = `<p style="color:var(--text-muted);text-align:center;padding:40px 0">Aún no has enviado ninguna solicitud. <br/><br/><button class="btn-primary" onclick="document.getElementById('tutores').scrollIntoView({behavior:'smooth'})">Explorar tutores</button></p>`;
+      return;
+    }
+    content.innerHTML = `<div class="solicitudes-list">${userSols.map(solicitudEstudianteCard).join('')}</div>`;
+
+    // Bind acciones del estudiante
+    content.querySelectorAll('.btn-resena-trigger').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tutor = App.tutores.find(t => t.id === btn.dataset.tutor);
+        if (tutor) {
+          $('#resena-subtitle').textContent = `Tu opinión sobre la sesión con ${tutor.nombre} ayuda a otros estudiantes a elegir mejor`;
+        }
+        $('#resena-tutor-id').value = btn.dataset.tutor;
+        $$('input[name="stars"]').forEach(r => r.checked = false);
+        $('#resena-comment').value = '';
+        setMsg('resena-stars-err', '');
+        openModal('modal-resena');
+      });
+    });
+    content.querySelectorAll('.btn-cancelar-sol').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.id;
+        App.solicitudes = App.solicitudes.filter(s => s.id !== id);
+        saveSolicitudes();
+        renderDashboard();
+        showToast('Solicitud cancelada.', 'info');
+      });
+    });
+    content.querySelectorAll('.btn-ver-tutor').forEach(btn => {
+      btn.addEventListener('click', () => openTutorModal(btn.dataset.tutor));
+    });
+    content.querySelectorAll('.btn-copy-phone').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const phone = btn.dataset.phone;
+        navigator.clipboard.writeText(phone).then(() => {
+          showToast('Número copiado al portapapeles.', 'success');
+        }).catch(() => {
+          showToast('No se pudo copiar. Copia el número manualmente.', 'error');
+        });
+      });
+    });
+  }
+}
+
+function solicitudTutorCard(sol) {
+  const initials = sol.estudianteNombre.split(' ').map(w=>w[0]).slice(0,2).join('');
+  let statusBadge = '';
+  let actionHtml = '';
+
+  switch (sol.status) {
+    case 'pending':
+      statusBadge = `<span class="status-badge status-pending">⏳ Pendiente</span>`;
+      actionHtml = `
+        <button class="btn-success btn-tutor-accept" data-id="${sol.id}">✓ Aceptar</button>
+        <button class="btn-outline-sm btn-tutor-reject" data-id="${sol.id}">Rechazar</button>`;
+      break;
+    case 'accepted':
+      statusBadge = `<span class="status-badge status-accepted">✓ Aceptada</span>`;
+      break;
+    case 'rejected':
+      statusBadge = `<span class="status-badge status-rejected">✕ Rechazada</span>`;
+      break;
+    case 'timeout':
+      statusBadge = `<span class="status-badge status-timeout">⚠ Vencida</span>`;
+      break;
+  }
+
+  const notaHtml = sol.nota ? `<div class="solicitud-note" aria-label="Mensaje del estudiante">"${escapeHtml(sol.nota)}"</div>` : '';
+
+  return `
+    <div class="solicitud-card" role="article" aria-label="Solicitud de ${sol.estudianteNombre}">
+      <div class="solicitud-avatar" style="background:${COLORES_AVATAR[2]}" aria-hidden="true">${initials}</div>
+      <div class="solicitud-info">
+        <div class="solicitud-name">Solicitud de ${sol.estudianteNombre}</div>
+        <div class="solicitud-detail">📚 ${sol.materia} · 📅 ${sol.horario}</div>
+        <div style="margin-top:6px">${statusBadge}</div>
+        ${notaHtml}
+      </div>
+      <div class="solicitud-actions">${actionHtml}</div>
+    </div>`;
+}
+
+function solicitudEstudianteCard(sol) {
+  // Mostrar alternativas si rechazada o vencida (según PDF)
+  const alts = App.tutores.filter(t => t.id !== sol.tutorId && t.materias.includes(sol.materiaTag) && t.id !== App.currentUser.id).slice(0, 3);
+  const initials = sol.tutorNombre.split(' ').map(w=>w[0]).slice(0,2).join('');
+
+  let statusBadge = '';
+  let actionHtml = '';
+  let extraHtml = '';
+
+  switch (sol.status) {
+    case 'pending':
+      statusBadge = `<span class="status-badge status-pending">⏳ Pendiente</span>`;
+      actionHtml = `<button class="btn-outline-sm btn-cancelar-sol" data-id="${sol.id}">Cancelar</button>`;
+      extraHtml = `<div class="solicitud-timer"><div class="timer-dot" aria-hidden="true"></div>El tutor responderá en 24 a 48 horas</div>`;
+      break;
+    case 'accepted':
+      statusBadge = `<span class="status-badge status-accepted">✓ Aceptada</span>`;
+      // Mensaje exacto del PDF: "Tu solicitud fue aceptada. Puedes contactar a tu mentor a través de WhatsApp: (número)."
+      const waNumber = sol.tutorTelefono ? sol.tutorTelefono.replace(/\D/g, '') : '';
+      const waFull = waNumber.startsWith('593') ? waNumber : (waNumber.startsWith('0') ? '593' + waNumber.substring(1) : '593' + waNumber);
+      extraHtml = `
+        <div class="contact-reveal" role="region" aria-label="Contacto de WhatsApp desbloqueado">
+          <div class="contact-label">✓ Puedes contactar a tu mentor por WhatsApp</div>
+          <div class="contact-value">${sol.tutorTelefono}</div>
+          <div class="contact-actions">
+            <a class="btn-whatsapp" href="https://wa.me/${waFull}?text=${encodeURIComponent('Hola ' + sol.tutorNombre.split(' ')[0] + ', mi solicitud de tutoría fue aceptada. Me gustaría coordinar nuestra sesión.')}" target="_blank" rel="noopener" aria-label="Abrir chat de WhatsApp con ${sol.tutorNombre}">
+              💬 Abrir WhatsApp
+            </a>
+            <button class="btn-copy btn-copy-phone" data-phone="${sol.tutorTelefono}">📋 Copiar número</button>
+          </div>
+        </div>`;
+      actionHtml = `<button class="btn-secondary btn-resena-trigger" data-tutor="${sol.tutorId}">⭐ Dejar reseña</button>`;
+      break;
+    case 'rejected':
+      statusBadge = `<span class="status-badge status-rejected">✕ Rechazada</span>`;
+      extraHtml = `<p style="font-size:0.85rem;color:var(--text-secondary);margin-top:4px">Lo sentimos, tu solicitud fue rechazada. Puedes buscar otras alternativas.</p>`;
+      if (alts.length > 0) {
+        extraHtml += `
+          <div class="alternative-suggestions" aria-label="Tutores alternativos sugeridos">
+            <p class="alt-title">💡 Otros tutores disponibles para ${sol.materiaTag}</p>
+            <div class="alt-list">
+              ${alts.map(a => `
+                <div class="alt-item">
+                  <span class="alt-item-name">
+                    <div class="alt-avatar" style="background:${COLORES_AVATAR[a.color]}" aria-hidden="true">${a.nombre[0]}${a.apellido[0]}</div>
+                    <span>${a.nombre} ${a.apellido} · ⭐${a.rating.toFixed(1)} · $${a.precio}/h</span>
+                  </span>
+                  <button class="btn-link" onclick="openTutorModal('${a.id}')" aria-label="Ver perfil de ${a.nombre}">Ver perfil →</button>
+                </div>`).join('')}
+            </div>
+          </div>`;
+      }
+      actionHtml = `<button class="btn-secondary btn-ver-tutor" data-tutor="${sol.tutorId}">Ver tutor</button>`;
+      break;
+    case 'timeout':
+      statusBadge = `<span class="status-badge status-timeout">⚠ Sin respuesta</span>`;
+      extraHtml = `<p style="font-size:0.85rem;color:var(--text-secondary);margin-top:4px">El mentor aún no ha respondido, sin embargo, aquí hay otros mentores disponibles para ${sol.materiaTag}.</p>`;
+      if (alts.length > 0) {
+        extraHtml += `
+          <div class="alternative-suggestions" aria-label="Tutores alternativos sugeridos">
+            <p class="alt-title">💡 Mentores sugeridos para ${sol.materiaTag}</p>
+            <div class="alt-list">
+              ${alts.map(a => `
+                <div class="alt-item">
+                  <span class="alt-item-name">
+                    <div class="alt-avatar" style="background:${COLORES_AVATAR[a.color]}" aria-hidden="true">${a.nombre[0]}${a.apellido[0]}</div>
+                    <span>${a.nombre} ${a.apellido} · ⭐${a.rating.toFixed(1)} · $${a.precio}/h</span>
+                  </span>
+                  <button class="btn-link" onclick="openTutorModal('${a.id}')" aria-label="Ver perfil de ${a.nombre}">Ver perfil →</button>
+                </div>`).join('')}
+            </div>
+          </div>`;
+      }
+      actionHtml = `<button class="btn-secondary btn-ver-tutor" data-tutor="${sol.tutorId}">Ver tutor</button>`;
+      break;
+  }
+
+  return `
+    <div class="solicitud-card" role="article" aria-label="Solicitud con ${sol.tutorNombre}">
+      <div class="solicitud-avatar" style="background:${COLORES_AVATAR[sol.tutorColor]}" aria-hidden="true">${initials}</div>
+      <div class="solicitud-info">
+        <div class="solicitud-name">${sol.tutorNombre}</div>
+        <div class="solicitud-detail">📚 ${sol.materia} · 📅 ${sol.horario}</div>
+        <div style="margin-top:6px">${statusBadge}</div>
+        ${extraHtml}
+      </div>
+      <div class="solicitud-actions">${actionHtml}</div>
+    </div>`;
+}
+
+function escapeHtml(str) {
+  return str.replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+}
+
+/* ========== PERFIL DE TUTOR (edición) ========== */
+function initTutorProfileForm() {
+  $('#form-tutor-profile').addEventListener('submit', handleTutorProfileSave);
+  setupLiveValidation('tp-materia', v => v.trim() ? null : 'Ingresa tu materia');
+  setupLiveValidation('tp-telefono', validateTelefono);
+  setupLiveValidation('tp-precio', validatePrecio);
+}
+
+function openTutorProfileEdit() {
+  if (!App.currentUser || App.currentUser.tipo !== 'Tutor') return;
+  // Cargar datos actuales del tutor
+  const tutor = App.tutores.find(t => t.id === App.currentUser.id);
+  if (!tutor) {
+    showToast('No se encontró tu perfil de tutor.', 'error');
+    return;
+  }
+
+  $('#tp-materia').value = tutor.materiaDetalle || '';
+  $('#tp-telefono').value = tutor.telefono || '';
+  $('#tp-precio').value = tutor.precio || '';
+  App.tpAvailability = new Set(tutor.disponibilidad || []);
+  renderAvailabilityCalendar('tp-availability', App.tpAvailability);
+
+  $('#tutor-edit-section').classList.remove('hidden');
+  $('#tutor-edit-section').scrollIntoView({ behavior: 'smooth' });
+}
+
+function handleTutorProfileSave(e) {
+  e.preventDefault();
+  clearMsg('tp-msg');
+  let valid = true;
+
+  const materia = $('#tp-materia').value.trim();
+  if (!materia) {
+    setFieldState($('#tp-materia'), 'Ingresa tu materia', $('#tp-materia-err'));
+    valid = false;
+  } else setFieldState($('#tp-materia'), null, $('#tp-materia-err'));
+
+  const telErr = validateTelefono($('#tp-telefono').value);
+  if (telErr) {
+    setFieldState($('#tp-telefono'), telErr, $('#tp-telefono-err'));
+    valid = false;
+  } else setFieldState($('#tp-telefono'), null, $('#tp-telefono-err'));
+
+  const precioErr = validatePrecio($('#tp-precio').value);
+  if (precioErr) {
+    setFieldState($('#tp-precio'), precioErr, $('#tp-precio-err'));
+    valid = false;
+  } else setFieldState($('#tp-precio'), null, $('#tp-precio-err'));
+
+  if (App.tpAvailability.size === 0) {
+    setMsg('tp-avail-err', 'Selecciona al menos un horario');
+    valid = false;
+  } else {
+    setMsg('tp-avail-err', '');
+  }
+
+  if (!valid) {
+    showFormMsg('tp-msg', 'Por favor revisa los campos marcados.', 'error');
+    return;
+  }
+
+  const tutor = App.tutores.find(t => t.id === App.currentUser.id);
+  if (!tutor) return;
+  tutor.materiaDetalle = materia;
+  tutor.materias = [detectMainSubject(materia)];
+  tutor.telefono = $('#tp-telefono').value.trim();
+  tutor.precio = parseInt($('#tp-precio').value);
+  tutor.disponibilidad = Array.from(App.tpAvailability);
+
+  // Actualizar también en currentUser y registered
+  Object.assign(App.currentUser, {
+    materiaDetalle: tutor.materiaDetalle,
+    materias: tutor.materias,
+    telefono: tutor.telefono,
+    precio: tutor.precio,
+    disponibilidad: tutor.disponibilidad,
+  });
+  sessionStorage.setItem('ss_user', JSON.stringify(App.currentUser));
+
+  const registered = getRegisteredUsers();
+  const idx = registered.findIndex(u => u.id === App.currentUser.id);
+  if (idx >= 0) {
+    Object.assign(registered[idx], App.currentUser);
+    sessionStorage.setItem('ss_registered', JSON.stringify(registered));
+  }
+
+  renderTutores(App.tutores);
+  // Mensaje exacto del PDF:
+  showToast('Perfil actualizado correctamente. Los alumnos ya pueden ver tu horario y materias.', 'success');
+}
+
+/* ========== RESEÑAS ========== */
+function initResenaModal() {
+  $('#close-resena').addEventListener('click', () => closeModal('modal-resena'));
+  $('#modal-resena').addEventListener('click', e => { if (e.target === $('#modal-resena')) closeModal('modal-resena'); });
+  $('#form-resena').addEventListener('submit', handleResena);
+}
+
+function handleResena(e) {
+  e.preventDefault();
+  clearMsg('resena-msg');
+  const tutorId = $('#resena-tutor-id').value;
+  const starsInput = $('input[name="stars"]:checked');
+  if (!starsInput) {
+    setMsg('resena-stars-err', 'Selecciona una calificación');
+    return;
+  }
+  setMsg('resena-stars-err', '');
+  const stars = parseInt(starsInput.value);
+  const comment = $('#resena-comment').value.trim();
+
+  if (!App.reviews[tutorId]) App.reviews[tutorId] = [];
+
+  const review = {
+    user: `${App.currentUser.nombre} ${App.currentUser.apellido[0]}.`,
+    stars,
+    comment,
+  };
+  App.reviews[tutorId].push(review);
+
+  const tutor = App.tutores.find(t => t.id === tutorId);
+  if (tutor) {
+    const r = App.reviews[tutorId];
+    tutor.rating = Math.round((r.reduce((s,rv)=>s+rv.stars,0)/r.length) * 10) / 10;
+    tutor.reviewsCount = r.length;
+  }
+
+  const sol = App.solicitudes.find(s => s.tutorId === tutorId && s.estudianteId === App.currentUser.id && s.status === 'accepted');
+  if (sol) sol.reviewed = true;
+  saveSolicitudes();
+
+  closeModal('modal-resena');
+  showToast('¡Reseña enviada! Gracias por tu opinión 🌟', 'success');
+  renderTutores(filterTutoresActuales());
+  if (!$('#dashboard-section').classList.contains('hidden')) renderDashboard();
+}
+
+function filterTutoresActuales() {
+  const materiaN = normalize($('#filter-materia').value);
+  const nivelF = $('#filter-nivel').value;
+  const maxPrice = parseInt($('#filter-price').value);
+  const minRating = parseFloat($('input[name="rating"]:checked').value);
+  const queryN = normalize($('#hero-search').value);
+  return App.tutores.filter(t => {
+    if (materiaN) {
+      const materiasN = (t.materias || []).map(normalize);
+      const detalleN = normalize(t.materiaDetalle || '');
+      const hit = materiasN.some(m => m.includes(materiaN)) || detalleN.includes(materiaN);
+      if (!hit) return false;
+    }
+    if (nivelF && t.nivel !== nivelF) return false;
+    if (t.precio > maxPrice) return false;
+    if (t.rating < minRating) return false;
+    if (queryN) {
+      const hay = normalize(`${t.nombre} ${t.apellido} ${t.carrera} ${(t.materias||[]).join(' ')} ${t.materiaDetalle||''}`);
+      if (!hay.includes(queryN)) return false;
+    }
+    return true;
+  });
+}
+
+/* ========== VALIDACIONES ========== */
+function validateEmail(v) {
+  if (!v.trim()) return 'El correo es obligatorio';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) return 'Ingresa un correo válido';
+  return null;
+}
+function validatePassword(v) {
+  if (!v) return 'La contraseña es obligatoria';
+  if (v.length < 6) return 'Mínimo 6 caracteres';
+  return null;
+}
+function validateNombre(v) {
+  if (!v.trim()) return 'El nombre es obligatorio';
+  if (/\d/.test(v)) return 'El nombre no debe contener números';
+  if (v.trim().length < 2) return 'El nombre es demasiado corto';
+  return null;
+}
+function validateApellido(v) {
+  if (!v.trim()) return 'El apellido es obligatorio';
+  if (/\d/.test(v)) return 'El apellido no debe contener números';
+  if (v.trim().length < 2) return 'El apellido es demasiado corto';
+  return null;
+}
+function validateTelefono(v) {
+  if (!v.trim()) return 'El número es obligatorio';
+  const cleaned = v.replace(/[\s\-\(\)]/g, '');
+  if (!/^\+?\d{7,15}$/.test(cleaned)) return 'Ingresa un número válido (7-15 dígitos)';
+  // Formato ecuatoriano sugerido (no obligatorio)
+  return null;
+}
+function validatePrecio(v) {
+  if (!v.toString().trim()) return 'El precio es obligatorio';
+  const num = parseInt(v);
+  if (isNaN(num) || num <= 0) return 'Ingresa un precio válido';
+  if (num > 200) return 'El precio parece muy alto';
+  return null;
+}
+
+function setFieldState(inp, error, errEl) {
+  if (!inp) return;
+  inp.classList.toggle('invalid', !!error);
+  inp.classList.toggle('valid', !error && inp.value.length > 0);
+  inp.setAttribute('aria-invalid', error ? 'true' : 'false');
+  if (errEl) errEl.textContent = error || '';
+}
+
+function setMsg(id, msg) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = msg;
+}
+
+function showFormMsg(id, msg, type) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = msg;
+  el.className = `form-msg ${type}`;
+  el.classList.remove('hidden');
+}
+
+function clearMsg(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = '';
+  el.classList.add('hidden');
+}
+
+/* ========== MODAL HELPERS ========== */
+function openModal(id) {
+  const modal = document.getElementById(id);
+  if (!modal) return;
+  modal.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+
+  requestAnimationFrame(() => {
+    const focusable = modal.querySelectorAll('button, input, select, textarea, a, [tabindex="0"]');
+    if (focusable[0]) focusable[0].focus();
+  });
+
+  modal._trapFn = trapFocus(modal);
+  modal.addEventListener('keydown', modal._trapFn);
+}
+
+function closeModal(id) {
+  const modal = document.getElementById(id);
+  if (!modal) return;
+  modal.classList.add('hidden');
+  document.body.style.overflow = '';
+  if (modal._trapFn) {
+    modal.removeEventListener('keydown', modal._trapFn);
+    delete modal._trapFn;
+  }
+}
+
+function trapFocus(modal) {
+  return function(e) {
+    if (e.key !== 'Tab') return;
+    const focusable = [...modal.querySelectorAll(
+      'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), a[href], [tabindex="0"]'
+    )].filter(el => !el.closest('.hidden') && el.offsetParent !== null);
+    if (focusable.length === 0) return;
+    const first = focusable[0], last = focusable[focusable.length - 1];
+    if (e.shiftKey) {
+      if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+    } else {
+      if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  };
+}
+
+/* ========== TOAST ========== */
+function showToast(msg, type = 'info') {
+  const icons = { success: '✓', error: '✕', info: 'ℹ', warning: '⚠' };
+  const container = $('#toast-container');
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type}`;
+  toast.setAttribute('role', 'status');
+  toast.innerHTML = `<span class="toast-icon" aria-hidden="true">${icons[type]}</span><span class="toast-text">${msg}</span>`;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.animation = 'toastOut 0.3s ease forwards';
+    setTimeout(() => toast.remove(), 300);
+  }, 5000);
+}
+
+/* ========== DOM HELPERS ========== */
+function $(sel) { return document.querySelector(sel); }
+function $$(sel) { return document.querySelectorAll(sel); }
+
+</script>
+</body>
+</html>
