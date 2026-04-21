@@ -976,6 +976,24 @@ a:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 3px; borde
 .summary-row:last-child { border-bottom: none; }
 .summary-label { color: var(--text-secondary); font-weight: 500; }
 .summary-value { color: var(--text-primary); font-weight: 600; text-align: right; }
+.summary-row-select { align-items: center; }
+.summary-select {
+  font-family: var(--font-body); font-size: 0.9rem; font-weight: 600;
+  color: var(--text-primary);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-xs);
+  padding: 6px 32px 6px 12px;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%234e5676' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center;
+  min-height: 36px;
+  max-width: 60%;
+  transition: border-color 0.18s;
+}
+.summary-select:focus { outline: 2px solid var(--accent-a); border-color: var(--border-focus); }
+.summary-select:hover { border-color: var(--accent-a); }
 
 /* ---------- DASHBOARD SOLICITUDES ---------- */
 .dashboard-section {
@@ -1398,7 +1416,6 @@ a:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 3px; borde
       <div class="field-group">
         <label>Disponibilidad semanal <span class="required" aria-hidden="true">*</span></label>
         <div id="tp-availability" class="schedule-mount"></div>
-        <span class="field-hint">Toca los horarios en los que estarás disponible. Aparecerán sombreados en tu perfil público.</span>
         <span class="field-error" id="tp-avail-err" role="alert" aria-live="polite"></span>
       </div>
       <div class="form-msg hidden" id="tp-msg"></div>
@@ -1433,14 +1450,6 @@ a:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 3px; borde
       <button type="submit" class="btn-primary btn-full">Iniciar sesión</button>
     </form>
     <p class="modal-switch">¿No tienes cuenta? <button class="btn-link" id="switch-to-register">Crear cuenta gratis</button></p>
-
-    <div class="demo-accounts">
-      <p class="demo-title">Cuentas de prueba</p>
-      <div class="demo-btns">
-        <button class="demo-btn" data-email="estudiante@demo.com" data-pw="demo123">Entrar como estudiante</button>
-        <button class="demo-btn" data-email="tutor@demo.com" data-pw="demo123">Entrar como tutor</button>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -1531,7 +1540,6 @@ a:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 3px; borde
         <div class="field-group">
           <label for="reg-materias">Materia y profesor <span class="required" aria-hidden="true">*</span></label>
           <textarea id="reg-materias" rows="2" placeholder="Ej. Cálculo Diferencial con Dr. Pérez"></textarea>
-          <span class="field-hint">Escribe la materia y el profesor con quien la recibiste</span>
           <span class="field-error" id="reg-materias-err" role="alert" aria-live="polite"></span>
         </div>
         <div class="field-group">
@@ -1548,7 +1556,6 @@ a:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 3px; borde
         <div class="field-group">
           <label>Disponibilidad semanal <span class="required" aria-hidden="true">*</span></label>
           <div id="reg-availability" class="schedule-mount"></div>
-          <span class="field-hint">Toca los horarios en los que estarás disponible</span>
           <span class="field-error" id="reg-avail-err" role="alert" aria-live="polite"></span>
         </div>
       </div>
@@ -2319,19 +2326,15 @@ function renderTutorProfile(t) {
 
   let bookingSection;
   if (isOwner) {
-    bookingSection = `<div class="login-prompt"><strong>Este es tu perfil público</strong><p>Así es como los estudiantes te ven.</p></div>`;
+    bookingSection = `<div class="login-prompt"><strong>Este es tu perfil público</strong></div>`;
   } else if (!isLoggedIn) {
-    bookingSection = `<div class="login-prompt">
-         <p><strong>Inicia sesión</strong> para reservar una sesión con este tutor.</p>
-         <button class="btn-primary btn-full" id="modal-login-prompt-btn">Iniciar sesión</button>
-       </div>`;
+    bookingSection = `<button class="btn-primary btn-full" id="modal-login-prompt-btn">Iniciar sesión para solicitar</button>`;
   } else if (!isStudent) {
-    bookingSection = `<div class="login-prompt"><p>Solo los estudiantes pueden enviar solicitudes de tutoría.</p></div>`;
+    bookingSection = `<div class="login-prompt"><p>Solo los estudiantes pueden enviar solicitudes.</p></div>`;
   } else if (yaEnviada) {
     bookingSection = `<div class="form-msg info" style="display:flex"><span aria-hidden="true">⏳</span> Ya tienes una solicitud pendiente con este tutor.</div>`;
   } else {
-    bookingSection = `<button class="btn-solicitar" id="btn-enviar-solicitud" disabled aria-label="Enviar solicitud a ${t.nombre}">Selecciona un horario</button>
-           <p style="font-size:0.78rem;color:var(--text-muted);text-align:center;margin-top:8px">Toca un horario disponible del calendario</p>`;
+    bookingSection = `<button class="btn-solicitar" id="btn-enviar-solicitud" disabled aria-label="Enviar solicitud a ${t.nombre}">Solicitar tutoría</button>`;
   }
 
   $('#tutor-modal-content').innerHTML = `
@@ -2446,6 +2449,25 @@ function openConfirmModal(tutor) {
   if (!App.currentUser) { openModal('modal-login'); return; }
   if (!App.selectedSlot) return;
 
+  const materias = tutor.materias || [];
+  let materiaField;
+  if (materias.length > 1) {
+    // Combo box para escoger la materia específica
+    materiaField = `
+      <div class="summary-row summary-row-select">
+        <label for="confirm-materia" class="summary-label">Materia</label>
+        <select id="confirm-materia" class="summary-select" aria-label="Selecciona la materia para la tutoría">
+          ${materias.map((m, i) => `<option value="${m}"${i === 0 ? ' selected' : ''}>${m}</option>`).join('')}
+        </select>
+      </div>`;
+  } else {
+    materiaField = `
+      <div class="summary-row">
+        <span class="summary-label">Materia</span>
+        <span class="summary-value">${materias[0] || tutor.materiaDetalle || '—'}</span>
+      </div>`;
+  }
+
   $('#confirm-summary').innerHTML = `
     <div class="summary-box">
       <p class="summary-title">Resumen de tu solicitud</p>
@@ -2453,10 +2475,7 @@ function openConfirmModal(tutor) {
         <span class="summary-label">Tutor</span>
         <span class="summary-value">${tutor.nombre} ${tutor.apellido}</span>
       </div>
-      <div class="summary-row">
-        <span class="summary-label">Materia</span>
-        <span class="summary-value">${tutor.materiaDetalle || tutor.materias.join(', ')}</span>
-      </div>
+      ${materiaField}
       <div class="summary-row">
         <span class="summary-label">Horario</span>
         <span class="summary-value">${App.selectedSlot}</span>
@@ -2475,6 +2494,11 @@ function confirmEnviarSolicitud() {
   if (!tutor || !App.selectedSlot || !App.currentUser) return;
 
   const note = $('#confirm-note').value.trim();
+  // Si hay combo box, tomar lo seleccionado; si no, la única materia del tutor
+  const materiaSelect = document.getElementById('confirm-materia');
+  const materiaElegida = materiaSelect
+    ? materiaSelect.value
+    : (tutor.materias && tutor.materias[0]) || tutor.materiaDetalle || '';
 
   const sol = {
     id: 'sol_' + Date.now(),
@@ -2484,8 +2508,8 @@ function confirmEnviarSolicitud() {
     tutorTelefono: tutor.telefono,
     estudianteId: App.currentUser.id,
     estudianteNombre: `${App.currentUser.nombre} ${App.currentUser.apellido}`,
-    materia: tutor.materiaDetalle || tutor.materias[0],
-    materiaTag: tutor.materias[0],
+    materia: materiaElegida,
+    materiaTag: materiaElegida,
     horario: App.selectedSlot,
     nota: note,
     status: 'pending',
