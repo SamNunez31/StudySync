@@ -641,6 +641,13 @@ a:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 3px; borde
   display: flex; align-items: center; gap: 4px;
 }
 .field-error:empty { display: none; }
+.field-error:not(:empty)::before { content: '⚠️'; font-size: 0.95em; }
+.field-error.shake { animation: shake 0.35s ease-in-out; }
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-4px); }
+  40%, 80% { transform: translateX(4px); }
+}
 .field-hint {
   display: block; font-size: 0.78rem; color: var(--text-muted); margin-top: 4px;
 }
@@ -1144,6 +1151,22 @@ a:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 3px; borde
 .btn-copy:hover { border-color: var(--accent-a); color: var(--accent-a); }
 .btn-copy:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 2px; }
 
+/* ---------- MODAL CONFIRMACIÓN CERRAR SESIÓN ---------- */
+.confirm-logout-actions {
+  display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px;
+}
+.btn-danger {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 6px;
+  background: var(--danger); color: #fff;
+  font-family: var(--font-body); font-weight: 600; font-size: 0.95rem;
+  padding: 12px 20px; border: none;
+  border-radius: var(--radius-sm); cursor: pointer;
+  transition: all 0.18s; min-height: 44px;
+}
+.btn-danger:hover { background: #b91c1c; transform: translateY(-1px); }
+.btn-danger:focus-visible { outline: 2px solid var(--danger); outline-offset: 2px; }
+
 /* ---------- TOAST ---------- */
 .toast-container {
   position: fixed; bottom: 24px; right: 24px; z-index: 2000;
@@ -1259,7 +1282,7 @@ a:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 3px; borde
     <div class="nav-user hidden" id="nav-user">
       <span class="user-greeting" id="user-greeting"></span>
       <button class="btn-ghost" id="btn-dashboard">Mi panel</button>
-      <button class="btn-outline-sm" id="btn-logout">Salir</button>
+      <button class="btn-outline-sm" id="btn-logout">Cerrar sesión</button>
     </div>
   </div>
 </header>
@@ -1627,6 +1650,22 @@ a:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 3px; borde
   </div>
 </div>
 
+<!-- NUEVO: Modal de confirmación de cierre de sesión -->
+<div class="modal-overlay hidden" id="modal-logout-confirm" role="dialog" aria-modal="true" aria-labelledby="logout-confirm-title">
+  <div class="modal-box">
+    <button class="modal-close" id="close-logout-confirm" aria-label="Cancelar cierre de sesión">✕</button>
+    <div class="modal-header">
+      <span class="modal-logo" aria-hidden="true">🚪</span>
+      <h2 id="logout-confirm-title">¿Estás seguro de cerrar sesión?</h2>
+      <p>Tendrás que iniciar sesión nuevamente para acceder a tu cuenta</p>
+    </div>
+    <div class="confirm-logout-actions">
+      <button type="button" class="btn-secondary" id="cancel-logout" style="flex:1">Cancelar</button>
+      <button type="button" class="btn-danger" id="confirm-logout" style="flex:1">Sí, cerrar sesión</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
 
 <footer class="footer" role="contentinfo">
@@ -1718,6 +1757,92 @@ const REVIEW_SEEDS = {
   t7: [{ user:'Sofía R.', stars:5, comment:'Profesional y muy detallista.' }, { user:'Marcos L.', stars:5, comment:'Aprobé el semestre gracias a ella.' }],
 };
 
+/* ========== SOLICITUDES DE EJEMPLO PARA EL TUTOR DEMO ========== */
+/* Estas solicitudes quemadas aparecen en el panel del tutor 'tutor@demo.com'
+   para que pueda practicar el flujo de aceptar / rechazar. */
+const SOLICITUDES_DEMO_TUTOR = [
+  {
+    id: 'sol_demo_1',
+    tutorId: 't_demo',
+    tutorNombre: 'Carlos Mendoza',
+    tutorColor: 0,
+    tutorTelefono: '0991234567',
+    estudianteId: 'u_demo_est1',
+    estudianteNombre: 'Ana Paredes',
+    materia: 'Cálculo',
+    materiaTag: 'Cálculo',
+    horario: 'Lunes a las 10:00',
+    nota: 'Necesito ayuda con derivadas parciales, tengo examen el viernes.',
+    status: 'pending',
+    createdAt: Date.now() - (2 * 60 * 60 * 1000),
+    expiresAt: Date.now() + (46 * 60 * 60 * 1000),
+  },
+  {
+    id: 'sol_demo_2',
+    tutorId: 't_demo',
+    tutorNombre: 'Carlos Mendoza',
+    tutorColor: 0,
+    tutorTelefono: '0991234567',
+    estudianteId: 'u_demo_est2',
+    estudianteNombre: 'Javier Ortega',
+    materia: 'Cálculo',
+    materiaTag: 'Cálculo',
+    horario: 'Miércoles a las 16:00',
+    nota: 'Me cuesta resolver integrales por partes, ¿podrías explicarme con ejercicios?',
+    status: 'pending',
+    createdAt: Date.now() - (5 * 60 * 60 * 1000),
+    expiresAt: Date.now() + (43 * 60 * 60 * 1000),
+  },
+  {
+    id: 'sol_demo_3',
+    tutorId: 't_demo',
+    tutorNombre: 'Carlos Mendoza',
+    tutorColor: 0,
+    tutorTelefono: '0991234567',
+    estudianteId: 'u_demo_est3',
+    estudianteNombre: 'Lucía Benavides',
+    materia: 'Cálculo',
+    materiaTag: 'Cálculo',
+    horario: 'Viernes a las 08:00',
+    nota: '',
+    status: 'pending',
+    createdAt: Date.now() - (30 * 60 * 1000),
+    expiresAt: Date.now() + (47 * 60 * 60 * 1000),
+  },
+  {
+    id: 'sol_demo_4',
+    tutorId: 't_demo',
+    tutorNombre: 'Carlos Mendoza',
+    tutorColor: 0,
+    tutorTelefono: '0991234567',
+    estudianteId: 'u_demo_est4',
+    estudianteNombre: 'Martín Salazar',
+    materia: 'Cálculo',
+    materiaTag: 'Cálculo',
+    horario: 'Jueves a las 10:00',
+    nota: 'Buenas tardes, quisiera reforzar el tema de límites.',
+    status: 'accepted',
+    createdAt: Date.now() - (3 * 24 * 60 * 60 * 1000),
+    respondedAt: Date.now() - (2 * 24 * 60 * 60 * 1000),
+  },
+  {
+    id: 'sol_demo_5',
+    tutorId: 't_demo',
+    tutorNombre: 'Carlos Mendoza',
+    tutorColor: 0,
+    tutorTelefono: '0991234567',
+    estudianteId: 'u_demo_est5',
+    estudianteNombre: 'Camila Vera',
+    materia: 'Cálculo',
+    materiaTag: 'Cálculo',
+    horario: 'Martes a las 14:00',
+    nota: 'No puedo ese día, gracias de todos modos.',
+    status: 'rejected',
+    createdAt: Date.now() - (5 * 24 * 60 * 60 * 1000),
+    respondedAt: Date.now() - (4 * 24 * 60 * 60 * 1000),
+  },
+];
+
 /* ========== INICIALIZACIÓN ========== */
 document.addEventListener('DOMContentLoaded', () => {
   initData();
@@ -1729,6 +1854,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initTutorModal();
   initConfirmModal();
   initResenaModal();
+  initLogoutConfirmModal();
   initTutorProfileForm();
   renderAvailabilityCalendar('reg-availability', App.regAvailability);
   checkSession();
@@ -1749,6 +1875,14 @@ function initData() {
   if (saved) {
     try { App.solicitudes = JSON.parse(saved); } catch(e) { App.solicitudes = []; }
   }
+  // Sembrar solicitudes de demo para el tutor demo (solo si no hay ya cargadas con esos ids)
+  const existingIds = new Set(App.solicitudes.map(s => s.id));
+  SOLICITUDES_DEMO_TUTOR.forEach(demoSol => {
+    if (!existingIds.has(demoSol.id)) {
+      App.solicitudes.push(demoSol);
+    }
+  });
+  saveSolicitudes();
 }
 
 function checkSession() {
@@ -1765,7 +1899,7 @@ function checkSession() {
 function initNavbar() {
   $('#btn-open-login').addEventListener('click', () => openModal('modal-login'));
   $('#btn-open-register').addEventListener('click', () => openModal('modal-register'));
-  $('#btn-logout').addEventListener('click', logout);
+  $('#btn-logout').addEventListener('click', () => openModal('modal-logout-confirm'));
   $('#btn-dashboard').addEventListener('click', openDashboard);
 }
 
@@ -1775,6 +1909,19 @@ function updateNavForUser() {
   $('#nav-auth').classList.add('hidden');
   $('#nav-user').classList.remove('hidden');
   $('#user-greeting').textContent = `Hola, ${u.nombre} (${u.tipo})`;
+}
+
+/* Inicializa el modal de confirmación de cierre de sesión */
+function initLogoutConfirmModal() {
+  $('#close-logout-confirm').addEventListener('click', () => closeModal('modal-logout-confirm'));
+  $('#cancel-logout').addEventListener('click', () => closeModal('modal-logout-confirm'));
+  $('#modal-logout-confirm').addEventListener('click', e => {
+    if (e.target === $('#modal-logout-confirm')) closeModal('modal-logout-confirm');
+  });
+  $('#confirm-logout').addEventListener('click', () => {
+    closeModal('modal-logout-confirm');
+    logout();
+  });
 }
 
 function logout() {
@@ -2020,7 +2167,7 @@ function initAuthModals() {
 
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
-      ['modal-login','modal-register','modal-tutor','modal-resena','modal-confirm'].forEach(id => {
+      ['modal-login','modal-register','modal-tutor','modal-resena','modal-confirm','modal-logout-confirm'].forEach(id => {
         if (!$('#'+id).classList.contains('hidden')) closeModal(id);
       });
     }
@@ -2043,10 +2190,64 @@ function initAuthModals() {
   setupLiveValidation('reg-apellido', validateApellido);
   setupLiveValidation('reg-email', validateEmail);
   setupLiveValidation('reg-password', validatePassword);
-  setupLiveValidation('reg-carrera', v => v.trim() ? null : 'La carrera es obligatoria');
+  setupLiveValidation('reg-carrera', validateCarrera);
   setupLiveValidation('reg-telefono', validateTelefono);
   setupLiveValidation('reg-precio', validatePrecio);
   setupLiveValidation('reg-materias', v => v.trim() ? null : 'Ingresa la materia y el profesor');
+  setupLiveValidation('tp-precio', validatePrecio);
+  setupLiveValidation('tp-telefono', validateTelefono);
+
+  // Bloqueo en tiempo real: números y símbolos en campos de texto (nombre/apellido/carrera)
+  setupInputFilter('reg-nombre', /[^a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s'\-]/g, 'Los nombres solo admiten letras');
+  setupInputFilter('reg-apellido', /[^a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s'\-]/g, 'Los apellidos solo admiten letras');
+  setupInputFilter('reg-carrera', /\d/g, 'La carrera no admite números');
+
+  // Bloqueo en tiempo real: letras y símbolos no válidos en campos numéricos (teléfono/precio)
+  setupInputFilter('reg-telefono', /[^0-9+\s\-\(\)]/g, 'El teléfono solo admite dígitos');
+  setupInputFilter('tp-telefono', /[^0-9+\s\-\(\)]/g, 'El teléfono solo admite dígitos');
+  setupInputFilter('reg-precio', /[^0-9.,]/g, 'El precio solo admite números');
+  setupInputFilter('tp-precio', /[^0-9.,]/g, 'El precio solo admite números');
+}
+
+/**
+ * Filtra en tiempo real caracteres no permitidos en un input.
+ * Si el usuario pega o escribe algo inválido, lo remueve y muestra un aviso breve.
+ */
+function setupInputFilter(inputId, badCharsRegex, hintMsg) {
+  const inp = document.getElementById(inputId);
+  if (!inp) return;
+  inp.addEventListener('input', () => {
+    const original = inp.value;
+    const cleaned = original.replace(badCharsRegex, '');
+    if (cleaned !== original) {
+      // Preservar posición del cursor aproximada
+      const pos = Math.max(0, inp.selectionStart - (original.length - cleaned.length));
+      inp.value = cleaned;
+      try { inp.setSelectionRange(pos, pos); } catch (e) {}
+      const errEl = document.getElementById(inputId + '-err');
+      if (errEl) {
+        errEl.textContent = hintMsg;
+        errEl.classList.add('shake');
+        setTimeout(() => errEl.classList.remove('shake'), 400);
+        // Autolimpiar el aviso al rato si el usuario sigue escribiendo bien
+        clearTimeout(inp._hintTimer);
+        inp._hintTimer = setTimeout(() => {
+          if (errEl.textContent === hintMsg && !inp.classList.contains('invalid')) {
+            errEl.textContent = '';
+          }
+        }, 2500);
+      }
+    }
+  });
+  // Bloquear al pegar también
+  inp.addEventListener('paste', (e) => {
+    const texto = (e.clipboardData || window.clipboardData).getData('text');
+    if (badCharsRegex.test(texto)) {
+      // Dejamos que el evento input se dispare y limpie, pero avisamos
+      const errEl = document.getElementById(inputId + '-err');
+      if (errEl) errEl.textContent = hintMsg + ' (el texto pegado fue limpiado)';
+    }
+  });
 }
 
 function setupLiveValidation(inputId, validator) {
@@ -2138,7 +2339,7 @@ function handleRegister(e) {
     { id: 'reg-apellido', validator: validateApellido },
     { id: 'reg-email', validator: validateEmail },
     { id: 'reg-password', validator: validatePassword },
-    { id: 'reg-carrera', validator: v => v.trim() ? null : 'La carrera es obligatoria' },
+    { id: 'reg-carrera', validator: validateCarrera },
     { id: 'reg-nivel', validator: v => v ? null : 'Selecciona un semestre' },
   ];
 
@@ -2964,39 +3165,80 @@ function filterTutoresActuales() {
 
 /* ========== VALIDACIONES ========== */
 function validateEmail(v) {
-  if (!v.trim()) return 'El correo es obligatorio';
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) return 'Ingresa un correo válido';
+  const val = v.trim();
+  if (!val) return 'El correo es obligatorio';
+  if (/\s/.test(val)) return 'El correo no puede contener espacios';
+  if (!val.includes('@')) return 'Falta el símbolo @ en el correo';
+  const partes = val.split('@');
+  if (partes.length > 2) return 'El correo tiene más de un símbolo @';
+  const [usuario, dominio] = partes;
+  if (!usuario) return 'Falta la parte antes del @ (ej: tu_nombre@correo.com)';
+  if (!dominio) return 'Falta la parte después del @ (ej: @gmail.com)';
+  if (!dominio.includes('.')) return 'Falta el punto en el dominio (ej: gmail.com, no gmail)';
+  if (dominio.startsWith('.') || dominio.endsWith('.')) return 'El dominio no puede empezar ni terminar con punto';
+  const ext = dominio.split('.').pop();
+  if (ext.length < 2) return 'La extensión del dominio es muy corta (ej: .com, .ec, .edu)';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) return 'El correo tiene caracteres no válidos';
   return null;
 }
 function validatePassword(v) {
   if (!v) return 'La contraseña es obligatoria';
-  if (v.length < 6) return 'Mínimo 6 caracteres';
+  if (v.length < 6) return `La contraseña tiene ${v.length} caracter${v.length === 1 ? '' : 'es'}, se necesitan al menos 6`;
+  if (/\s/.test(v)) return 'La contraseña no puede contener espacios';
   return null;
 }
 function validateNombre(v) {
-  if (!v.trim()) return 'El nombre es obligatorio';
-  if (/\d/.test(v)) return 'El nombre no debe contener números';
-  if (v.trim().length < 2) return 'El nombre es demasiado corto';
+  const val = v.trim();
+  if (!val) return 'El nombre es obligatorio';
+  const nums = val.match(/\d/g);
+  if (nums) return `El nombre no puede contener números (encontré: ${[...new Set(nums)].join(', ')})`;
+  const simbolos = val.match(/[^a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s'\-]/g);
+  if (simbolos) return `El nombre no puede contener símbolos (encontré: ${[...new Set(simbolos)].join(' ')})`;
+  if (val.length < 2) return 'El nombre debe tener al menos 2 letras';
   return null;
 }
 function validateApellido(v) {
-  if (!v.trim()) return 'El apellido es obligatorio';
-  if (/\d/.test(v)) return 'El apellido no debe contener números';
-  if (v.trim().length < 2) return 'El apellido es demasiado corto';
+  const val = v.trim();
+  if (!val) return 'El apellido es obligatorio';
+  const nums = val.match(/\d/g);
+  if (nums) return `El apellido no puede contener números (encontré: ${[...new Set(nums)].join(', ')})`;
+  const simbolos = val.match(/[^a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s'\-]/g);
+  if (simbolos) return `El apellido no puede contener símbolos (encontré: ${[...new Set(simbolos)].join(' ')})`;
+  if (val.length < 2) return 'El apellido debe tener al menos 2 letras';
+  return null;
+}
+function validateCarrera(v) {
+  const val = v.trim();
+  if (!val) return 'La carrera es obligatoria';
+  const nums = val.match(/\d/g);
+  if (nums) return `La carrera no puede contener números (encontré: ${[...new Set(nums)].join(', ')})`;
+  if (val.length < 3) return 'La carrera debe tener al menos 3 letras';
   return null;
 }
 function validateTelefono(v) {
-  if (!v.trim()) return 'El número es obligatorio';
-  const cleaned = v.replace(/[\s\-\(\)]/g, '');
-  if (!/^\+?\d{7,15}$/.test(cleaned)) return 'Ingresa un número válido (7-15 dígitos)';
-  // Formato ecuatoriano sugerido (no obligatorio)
+  const val = v.trim();
+  if (!val) return 'El número de WhatsApp es obligatorio';
+  const letras = val.match(/[a-zA-ZáéíóúñÁÉÍÓÚÑ]/g);
+  if (letras) return `El número no puede contener letras (encontré: ${[...new Set(letras)].join(', ')})`;
+  const cleaned = val.replace(/[\s\-\(\)\+]/g, '');
+  const soloDigitos = cleaned.replace(/\D/g, '');
+  if (soloDigitos.length === 0) return 'Ingresa solo dígitos (ej: 0991234567)';
+  if (soloDigitos.length < 7) return `El número tiene ${soloDigitos.length} dígito${soloDigitos.length === 1 ? '' : 's'}, se necesitan al menos 7`;
+  if (soloDigitos.length > 15) return `El número tiene ${soloDigitos.length} dígitos, el máximo es 15`;
   return null;
 }
 function validatePrecio(v) {
-  if (!v.toString().trim()) return 'El precio es obligatorio';
-  const num = parseInt(v);
-  if (isNaN(num) || num <= 0) return 'Ingresa un precio válido';
-  if (num > 200) return 'El precio parece muy alto';
+  const val = v.toString().trim();
+  if (!val) return 'El precio es obligatorio';
+  const letras = val.match(/[a-zA-ZáéíóúñÁÉÍÓÚÑ]/g);
+  if (letras) return `El precio solo admite números (encontré la letra: ${letras[0]})`;
+  const simbolos = val.match(/[^0-9.,]/g);
+  if (simbolos) return `El precio solo admite números (encontré: ${simbolos[0]})`;
+  const num = parseFloat(val.replace(',', '.'));
+  if (isNaN(num)) return 'El precio no es un número válido';
+  if (num <= 0) return 'El precio debe ser mayor a 0';
+  if (num < 1) return 'El precio mínimo es $1 por hora';
+  if (num > 200) return `El precio parece muy alto ($${num}/hora). El máximo sugerido es $200`;
   return null;
 }
 
