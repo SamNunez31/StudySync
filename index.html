@@ -631,9 +631,13 @@ a:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 3px; borde
   background: none; border: none; cursor: pointer; font-size: 1rem;
   color: var(--text-muted); padding: 4px; min-height: 32px; min-width: 32px;
   border-radius: var(--radius-xs);
+  display: inline-flex; align-items: center; justify-content: center;
 }
 .toggle-pw:hover { color: var(--text-primary); background: var(--bg3); }
 .toggle-pw:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 2px; border-radius: 4px; }
+.toggle-pw svg { display: none; }
+.toggle-pw.pw-hidden .icon-eye { display: block; }
+.toggle-pw.pw-visible .icon-eye-off { display: block; }
 
 .field-error {
   display: block; font-size: 0.8rem; color: var(--danger);
@@ -1465,7 +1469,10 @@ a:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 3px; borde
         <label for="login-password">Contraseña</label>
         <div class="input-pw-wrap">
           <input type="password" id="login-password" autocomplete="current-password" placeholder="••••••" aria-required="true" aria-describedby="login-password-err" />
-          <button type="button" class="toggle-pw" aria-label="Mostrar contraseña" data-target="login-password">👁</button>
+          <button type="button" class="toggle-pw" aria-label="Mostrar contraseña" data-target="login-password" aria-pressed="false">
+            <svg class="icon-eye" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg class="icon-eye-off" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a19.77 19.77 0 0 1 5.06-5.94M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 8 11 8a19.86 19.86 0 0 1-3.17 4.19M1 1l22 22M9.88 9.88a3 3 0 0 0 4.24 4.24"/></svg>
+          </button>
         </div>
         <span class="field-error" id="login-password-err" role="alert" aria-live="polite"></span>
       </div>
@@ -1529,7 +1536,10 @@ a:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 3px; borde
         <label for="reg-password">Contraseña <span class="required" aria-hidden="true">*</span></label>
         <div class="input-pw-wrap">
           <input type="password" id="reg-password" autocomplete="new-password" placeholder="Mínimo 6 caracteres" aria-required="true" aria-describedby="reg-password-err reg-pw-hint" />
-          <button type="button" class="toggle-pw" aria-label="Mostrar contraseña" data-target="reg-password">👁</button>
+          <button type="button" class="toggle-pw" aria-label="Mostrar contraseña" data-target="reg-password" aria-pressed="false">
+            <svg class="icon-eye" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg class="icon-eye-off" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a19.77 19.77 0 0 1 5.06-5.94M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 8 11 8a19.86 19.86 0 0 1-3.17 4.19M1 1l22 22M9.88 9.88a3 3 0 0 0 4.24 4.24"/></svg>
+          </button>
         </div>
         <span class="field-hint" id="reg-pw-hint">Mínimo 6 caracteres</span>
         <span class="field-error" id="reg-password-err" role="alert" aria-live="polite"></span>
@@ -2174,12 +2184,16 @@ function initAuthModals() {
   });
 
   $$('.toggle-pw').forEach(btn => {
+    // Estado inicial: contraseña oculta => mostramos el ojo abierto (acción: mostrar)
+    btn.classList.add('pw-hidden');
     btn.addEventListener('click', () => {
       const inp = document.getElementById(btn.dataset.target);
       const showing = inp.type === 'text';
       inp.type = showing ? 'password' : 'text';
       btn.setAttribute('aria-label', showing ? 'Mostrar contraseña' : 'Ocultar contraseña');
-      btn.textContent = showing ? '👁' : '🙈';
+      btn.setAttribute('aria-pressed', showing ? 'false' : 'true');
+      btn.classList.toggle('pw-hidden', showing);
+      btn.classList.toggle('pw-visible', !showing);
     });
   });
 
