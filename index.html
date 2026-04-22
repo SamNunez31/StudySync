@@ -1266,6 +1266,22 @@ a:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 3px; borde
 }
 .tutor-edit-sub { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 24px; }
 
+.btn-back {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: transparent; border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 8px 14px; border-radius: var(--radius-xs);
+  font-size: 0.88rem; font-weight: 600; cursor: pointer;
+  margin-bottom: 20px;
+  transition: all 0.15s ease;
+}
+.btn-back:hover {
+  color: var(--text-primary); background: var(--bg3);
+  border-color: var(--text-muted); transform: translateX(-2px);
+}
+.btn-back:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 2px; }
+.btn-back svg { flex-shrink: 0; }
+
   </style>
 </head>
 <body>
@@ -1421,6 +1437,10 @@ a:focus-visible { outline: 2px solid var(--accent-a); outline-offset: 3px; borde
 
 <section class="tutor-edit-section hidden" id="tutor-edit-section" aria-labelledby="tutor-edit-title">
   <div class="tutor-edit-box">
+    <button type="button" class="btn-back" id="btn-back-dashboard" aria-label="Regresar al panel">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      <span>Regresar al panel</span>
+    </button>
     <h2 id="tutor-edit-title" class="tutor-edit-title">Mi perfil de tutor</h2>
     <p class="tutor-edit-sub">Actualiza tu materia, teléfono y horarios disponibles</p>
     <form id="form-tutor-profile" novalidate>
@@ -3021,6 +3041,15 @@ function initTutorProfileForm() {
   setupLiveValidation('tp-materia', v => v.trim() ? null : 'Ingresa tu materia');
   setupLiveValidation('tp-telefono', validateTelefono);
   setupLiveValidation('tp-precio', validatePrecio);
+  $('#btn-back-dashboard').addEventListener('click', closeTutorProfileEdit);
+}
+
+function closeTutorProfileEdit() {
+  $('#tutor-edit-section').classList.add('hidden');
+  App.dashboardFilter = 'todas';
+  $('#dashboard-section').classList.remove('hidden');
+  renderDashboard();
+  $('#dashboard-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function openTutorProfileEdit() {
